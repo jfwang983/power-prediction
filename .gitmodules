@@ -1,0 +1,9 @@
+[submodule "dosa"]
+	path = dosa
+	url = https://github.com/ucb-bar/dosa.git
+[submodule "hammer"]
+	path = hammer
+	url = https://github.com/ucb-bar/hammer.git
+[submodule "power-mappings-chipyard"]
+	path = power-mappings-chipyard
+	url = https://github.com/jfwang983/power-mappings-chipyard.git
