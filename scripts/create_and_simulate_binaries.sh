@@ -6,23 +6,26 @@ ctrl_c() {
 trap ctrl_c INT
 
 SCRIPT_DIR=$PWD
-cd ../power-mappings-chipyard/vlsi
-source /ecad/tools/vlsi.bashrc
-cd $SCRIPT_DIR
 
 # Create CSV for list of binaries to generate
 if [ "$4" = "-regen" ]; then
     cd ../dosa
     python run.py --arch_name gemmini --arch_file dataset/hw/gemmini/arch/arch.yaml --num_mappings 10000 -wl $1
     cd $SCRIPT_DIR
-    python sample_extract.py -regen
+    python sample_extract.py $1 -regen
 else
-    python sample_extract.py -append
+    python sample_extract.py $1 -append
 fi
+
+# Setup Chipyard
+cd ../power-mappings-chipyard
+source ../../miniconda3/etc/profile.d/conda.sh
+source env.sh
+source /ecad/tools/vlsi.bashrc
 
 # Generate binaries
 data_output="./mappings/$1_random.csv"
-cd ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests/gemmini-data-collection
+cd generators/gemmini/software/gemmini-rocc-tests/gemmini-data-collection
 ./build_script.sh $data_output
 
 cd ../build/bareMetalC/
