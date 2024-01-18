@@ -1,5 +1,8 @@
 # Setup
-1. This repo assumes miniconda3 is located in ``/scratch/{user}/miniconda3``
+0. This repo assumes miniconda3 is located in ``/scratch/{user}/miniconda3``
+1. ```bash
+   git clone https://github.com/jfwang983/power-prediction.git --recursive
+   ```
 2. Initialization
     ```bash
     ./init_all.sh
