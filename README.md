@@ -93,7 +93,7 @@
        make redo-power-rtl args="--only_step report_power"
        ```
 
-# Automate Joules
+# Automating Joules
 The following scripts are designed to produce Joules reports for different mappings of a workload for Gemmini:
 * ``scripts/run.sh``: Calls other scripts to generate binaries for mappings, run RTL simulation for binaries, and run Joules for waveforms
 * ``scripts/create_and_simulate_binaries.sh``: Generates unique mappings and creates baremetal C binaries per mapping
