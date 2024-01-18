@@ -4,7 +4,7 @@
    ```bash
    git clone https://github.com/jfwang983/power-prediction.git --recursive
    ```
-2. Initialization
+2. Initialize everything
     ```bash
     ./init_all.sh
     ```
