@@ -10,7 +10,7 @@ SCRIPT_DIR=$PWD
 # Create CSV for list of binaries to generate
 if [ "$4" = "-regen" ]; then
     cd ../dosa
-    python run.py --arch_name gemmini --arch_file dataset/hw/gemmini/arch/arch.yaml --num_mappings 10000 -wl $1
+    python run.py --arch_name gemmini --arch_file dataset/hw/gemmini/arch/arch.yaml --num_mappings 200 -wl $1
     cd $SCRIPT_DIR
     python sample_extract.py $1 -regen
 else
