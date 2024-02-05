@@ -7,14 +7,21 @@ trap ctrl_c INT
 
 SCRIPT_DIR=$PWD
 
+WORKLOAD=$1
+REDO_FLAG=$2
+LOADMEM_FLAG=$3
+OPERATION=$4
+TYPE=$5
+INIT_RTL=$6
+
 # Create CSV for list of binaries to generate
-if [ "$4" = "-regen" ]; then
+if [ "$OPERATION" = "-regen" ]; then
     cd ../dosa
-    python run.py --arch_name gemmini --arch_file dataset/hw/gemmini/arch/arch.yaml --num_mappings 200 -wl $1
+    python run.py --arch_name gemmini --arch_file dataset/hw/gemmini/arch/arch.yaml --num_mappings 10000 -wl $WORKLOAD
     cd $SCRIPT_DIR
-    python sample_extract.py $1 -regen
+    python sample_extract.py $WORKLOAD -regen
 else
-    python sample_extract.py $1 -append
+    python sample_extract.py $WORKLOAD -append
 fi
 
 # Setup Chipyard
@@ -23,29 +30,38 @@ source ../../miniconda3/etc/profile.d/conda.sh
 source env.sh
 source /ecad/tools/vlsi.bashrc
 
-# Generate binaries
-data_output="./mappings/$1_random.csv"
-cd generators/gemmini/software/gemmini-rocc-tests/gemmini-data-collection
-./build_script.sh $data_output
+cd generators/gemmini/software/gemmini-rocc-tests/build/bareMetalC
 
-cd ../build/bareMetalC/
-NUM_FILES=$(ls -1 | wc -l)
-START=$(($NUM_FILES/3))
-END=$(($START+100))
-
-if [ "$4" = "-regen" ]; then
+if [ "$OPERATION" = "-append" ]; then
+    NUM_FILES=$(ls -1 | wc -l)
+    START=$(($NUM_FILES/3))
+    END=$(($START+100))
+else
     START=0
-    END=$(($NUM_FILES/3))
+    END=100
 fi
 
+# Generate binaries
+data_output="./mappings/$WORKLOAD_random.csv"
+cd ../../gemmini-data-collection
+./build_script.sh $data_output
 
-# Run RTL Sim
 cd $SCRIPT_DIR
 cd ../power-mappings-chipyard/vlsi
+
+if [ "$INIT_RTL" = "-init" ]; then
+    echo "Binary 0"
+    binary="../generators/gemmini/software/gemmini-rocc-tests/build/bareMetalC/$TYPE_tilings_0-baremetal"
+    make sim-rtl-debug BINARY=$binary LOADMEM=$binary
+    make power-rtl
+    START=1
+fi
+
+# Run RTL Sim
 for (( i=$START; i<$END; i++ ))
 do
     echo "Binary $i"
-    binary="../generators/gemmini/software/gemmini-rocc-tests/build/bareMetalC/matmul_tilings_$i-baremetal"
-    ./run_rtl_sim.sh $binary $2 $3 &
+    binary="../generators/gemmini/software/gemmini-rocc-tests/build/bareMetalC/$TYPE_tilings_$i-baremetal"
+    ./run_rtl_sim.sh $binary $REDO_FLAG $LOADMEM_FLAG &
     wait
 done

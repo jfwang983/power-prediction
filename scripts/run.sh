@@ -12,15 +12,24 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
-./create_and_simulate_binaries.sh $1 -r -l $2
+WORKLOAD=$1
+OPERATION=$2
+TYPE=$3
+INIT_RTL=$4
 
-START=0
-END=100
-if [ "$2" = "-append" ]; then
+./create_and_simulate_binaries.sh $WORKLOAD -r -l $OPERATION $TYPE $INIT_RTL
+
+if [ "$OPERATION" = "-append" ]; then
     cd ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests/build/bareMetalC/
     NUM_FILES=$(ls -1 | wc -l)
-    START=$(($NUM_FILES/3))
-    END=$(($START+100))
+    END=$(($NUM_FILES/3))
+    START=$(($END-100))
+elif [ "$INIT_RTL" = "-init" ]; then
+    START=1
+    END=100
+else
+    START=0
+    END=100
 fi
 
 cd $SCRIPT_DIR
