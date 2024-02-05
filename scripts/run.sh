@@ -24,5 +24,9 @@ if [ "$2" = "-append" ]; then
 fi
 
 cd $SCRIPT_DIR
+cd ../power-mappings-chipyard
+source ../../miniconda3/etc/profile.d/conda.sh
+source env.sh
+cd vlsi
 cd ../power-mappings-chipyard/vlsi
 python run_joules.py $START $END
