@@ -15,7 +15,8 @@ fi
 WORKLOAD=$1
 OPERATION=$2
 TYPE=$3
-INIT_RTL=$4
+REPORT_NAME=$4
+INIT_RTL=$5
 
 ./create_and_simulate_binaries.sh $WORKLOAD -r -l $OPERATION $TYPE $INIT_RTL
 
@@ -37,5 +38,4 @@ cd ../power-mappings-chipyard
 source ../../miniconda3/etc/profile.d/conda.sh
 source env.sh
 cd vlsi
-cd ../power-mappings-chipyard/vlsi
-python run_joules.py $START $END
+python run_joules.py $TYPE $REPORT_NAME $START $END
