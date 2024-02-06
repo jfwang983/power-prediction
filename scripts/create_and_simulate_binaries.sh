@@ -51,7 +51,7 @@ cd ../power-mappings-chipyard/vlsi
 
 if [ "$INIT_RTL" = "-init" ]; then
     echo "Binary 0"
-    binary="../generators/gemmini/software/gemmini-rocc-tests/build/bareMetalC/$TYPE_tilings_0-baremetal"
+    binary="../generators/gemmini/software/gemmini-rocc-tests/build/bareMetalC/${TYPE}_tilings_0-baremetal"
     make sim-rtl-debug BINARY=$binary LOADMEM=$binary
     make power-rtl
     START=1
@@ -61,7 +61,7 @@ fi
 for (( i=$START; i<$END; i++ ))
 do
     echo "Binary $i"
-    binary="../generators/gemmini/software/gemmini-rocc-tests/build/bareMetalC/$TYPE_tilings_$i-baremetal"
+    binary="../generators/gemmini/software/gemmini-rocc-tests/build/bareMetalC/${TYPE}_tilings_${i}-baremetal"
     ./run_rtl_sim.sh $binary $REDO_FLAG $LOADMEM_FLAG &
     wait
 done
