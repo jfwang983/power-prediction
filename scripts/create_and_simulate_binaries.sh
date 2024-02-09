@@ -30,20 +30,20 @@ source ../../miniconda3/etc/profile.d/conda.sh
 source env.sh
 source /ecad/tools/vlsi.bashrc
 
-cd generators/gemmini/software/gemmini-rocc-tests/build/bareMetalC
-
 if [ "$OPERATION" = "-append" ]; then
+    cd generators/gemmini/software/gemmini-rocc-tests/build/bareMetalC
     NUM_FILES=$(ls -1 | wc -l)
     START=$(($NUM_FILES/3))
     END=$(($START+100))
+    cd $SCRIPT_DIR/../power-mappings-chipyard
 else
     START=0
     END=100
 fi
 
 # Generate binaries
-data_output="./mappings/$WORKLOAD_random.csv"
-cd ../../gemmini-data-collection
+cd generators/gemmini/software/gemmini-rocc-tests/gemmini-data-collection
+data_output="./mappings/${WORKLOAD}_random.csv"
 ./build_script.sh $data_output
 
 cd $SCRIPT_DIR
