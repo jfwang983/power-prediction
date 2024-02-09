@@ -15,14 +15,14 @@ TYPE=$5
 INIT_RTL=$6
 
 # Create CSV for list of binaries to generate
-if [ "$OPERATION" = "-regen" ]; then
-    cd ../dosa
-    python run.py --arch_name gemmini --arch_file dataset/hw/gemmini/arch/arch.yaml --num_mappings 10000 -wl $WORKLOAD
-    cd $SCRIPT_DIR
-    python sample_extract.py $WORKLOAD -regen
-else
-    python sample_extract.py $WORKLOAD -append
-fi
+# if [ "$OPERATION" = "-regen" ]; then
+#     cd ../dosa
+#     python run.py --arch_name gemmini --arch_file dataset/hw/gemmini/arch/arch.yaml --num_mappings 10000 -wl $WORKLOAD
+#     cd $SCRIPT_DIR
+#     python sample_extract.py $WORKLOAD -regen
+# else
+#     python sample_extract.py $WORKLOAD -append
+# fi
 
 # Setup Chipyard
 cd ../power-mappings-chipyard
@@ -52,8 +52,8 @@ cd ../power-mappings-chipyard/vlsi
 if [ "$INIT_RTL" = "-init" ]; then
     echo "Binary 0"
     binary="${SCRIPT_DIR}/../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests/build/bareMetalC/${TYPE}_tilings_0-baremetal"
-    make sim-rtl-debug BINARY=$binary LOADMEM=$binary
-    make power-rtl
+    ./run_rtl_sim.sh $binary -l
+    python run_joules.py $TYPE $REPORT_NAME 0 1
     START=1
 fi
 
