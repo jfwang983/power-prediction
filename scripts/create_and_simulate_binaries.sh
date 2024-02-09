@@ -15,14 +15,14 @@ TYPE=$5
 INIT_RTL=$6
 
 # Create CSV for list of binaries to generate
-# if [ "$OPERATION" = "-regen" ]; then
-#     cd ../dosa
-#     python run.py --arch_name gemmini --arch_file dataset/hw/gemmini/arch/arch.yaml --num_mappings 10000 -wl $WORKLOAD
-#     cd $SCRIPT_DIR
-#     python sample_extract.py $WORKLOAD -regen
-# else
-#     python sample_extract.py $WORKLOAD -append
-# fi
+if [ "$OPERATION" = "-regen" ]; then
+    cd ../dosa
+    python run.py --arch_name gemmini --arch_file dataset/hw/gemmini/arch/arch.yaml --num_mappings 10000 -wl $WORKLOAD
+    cd $SCRIPT_DIR
+    python sample_extract.py $WORKLOAD -regen
+else
+    python sample_extract.py $WORKLOAD -append
+fi
 
 # Setup Chipyard
 cd ../power-mappings-chipyard
