@@ -53,7 +53,7 @@ if [ "$INIT_RTL" = "-init" ]; then
     echo "Binary 0"
     binary="${SCRIPT_DIR}/../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests/build/bareMetalC/${TYPE}_tilings_0-baremetal"
     ./run_rtl_sim.sh $binary -l
-    python run_joules.py $TYPE $REPORT_NAME 0 1
+    python run_joules.py $TYPE $REPORT_NAME 0 1 $INIT_RTL
     START=1
 fi
 

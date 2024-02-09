@@ -38,4 +38,4 @@ cd ../power-mappings-chipyard
 source ../../miniconda3/etc/profile.d/conda.sh
 source env.sh
 cd vlsi
-python run_joules.py $TYPE $REPORT_NAME $START $END
+python run_joules.py $TYPE $REPORT_NAME $START $END $INIT_RTL
