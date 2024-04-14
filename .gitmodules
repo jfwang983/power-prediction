@@ -1,6 +1,3 @@
-[submodule "dosa"]
-	path = dosa
-	url = https://github.com/ucb-bar/dosa.git
 [submodule "hammer"]
 	path = hammer
 	url = https://github.com/ucb-bar/hammer.git
