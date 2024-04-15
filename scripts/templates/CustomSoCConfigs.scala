@@ -21,10 +21,10 @@ class CustomGemminiSoCConfig extends Config(
   new chipyard.CustomGemmminiCPUConfigs.CustomCPU(1) ++
 
   new chipyard.config.WithSystemBusWidth(GemminiCustomConfigs.customConfig.dma_buswidth) ++
-  new chipyard.config.WithTileFrequency(62.5) ++    // 16ns period --> 62.5 MHz freq
-  new chipyard.config.WithSystemBusFrequency(62.5) ++
-  new chipyard.config.WithMemoryBusFrequency(62.5) ++   
-  new chipyard.config.WithPeripheryBusFrequency(62.5) ++
+  new chipyard.config.WithTileFrequency(31.25) ++    // 32ns period --> 31.25 MHz freq
+  new chipyard.config.WithSystemBusFrequency(31.25) ++
+  new chipyard.config.WithMemoryBusFrequency(31.25) ++   
+  new chipyard.config.WithPeripheryBusFrequency(31.25) ++
   new chipyard.config.AbstractConfig
 )
 */
