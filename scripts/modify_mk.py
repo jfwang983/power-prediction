@@ -1,14 +1,15 @@
 import sys
-import yaml
+import os
 
 try:     
     sys.argv[1]
 except Exception as e:
     raise ValueError("Not enough args")
 
-binary_path = sys.argv[1]
+workload = sys.argv[1]
 
 mk_file = "../power-mappings-chipyard/vlsi/custom.mk"
+binary_path = f"{os.getcwd()}/../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests/build/bareMetalC/{workload}-baremetal"
 
 with open(mk_file, 'r') as file:
     lines = file.readlines()

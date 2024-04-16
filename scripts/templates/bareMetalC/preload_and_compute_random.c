@@ -26,7 +26,7 @@ int main() {
   uint32_t B_sp_addr = DIM * 2;
   uint32_t C_sp_addr = 1 << 31;
 
-  int iterations = 10000;
+  int iterations = 1000;
 
   unsigned long start, end, benchmark_cycles;
   start = read_cycles();
