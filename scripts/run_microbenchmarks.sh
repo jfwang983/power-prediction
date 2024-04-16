@@ -9,7 +9,7 @@ ctrl_c() {
 trap ctrl_c INT
 
 run_vcs() {
-     make redo-sim-rtl-debug BINARY=$1 LOADMEM=$1 &
+     make redo-sim-rtl-debug BINARY=$1 LOADMEM=$1 args="--only_step run_simulation" &
      wait
 }
 

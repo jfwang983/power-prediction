@@ -8,7 +8,7 @@ except Exception as e:
 
 workload = sys.argv[1]
 
-yaml_file = "/scratch/jfwang/power-prediction/power-mappings-chipyard/vlsi/custom.yml"
+yaml_file = "../power-mappings-chipyard/vlsi/custom.yml"
 waveform_path = f"output/chipyard.harness.TestHarness.CustomGemminiSoCConfig/{workload}-baremetal.fsdb"
 report_name = f"{workload}-baremetal-gemmini"
 
