@@ -8,6 +8,10 @@ ctrl_c() {
 
 trap ctrl_c INT
 
+# Repo Setup
+git submodule init
+git submodule update
+
 # Custom Chipyard Setup
 conda install -n base conda-lock=1.4
 git clone https://github.com/jfwang983/power-mappings-chipyard.git
@@ -31,8 +35,8 @@ make -C software/libgemmini install
 
 # Gemmini Config Setup
 cd $REPO_DIR
-cp -f scripts/templates/CustomConfigs.scala ../power-mappings-chipyard/generators/gemmini/src/main/scala/gemmini/CustomConfigs.scala
-cp -f scripts/templates/CustomSoCConfigs.scala ../power-mappings-chipyard/generators/gemmini/src/main/scala/gemmini/CustomSoCConfigs.scala
+cp -f scripts/templates/CustomConfigs.scala power-mappings-chipyard/generators/gemmini/src/main/scala/gemmini/CustomConfigs.scala
+cp -f scripts/templates/CustomSoCConfigs.scala power-mappings-chipyard/generators/gemmini/src/main/scala/gemmini/CustomSoCConfigs.scala
 cd power-mappings-chipyard/generators/gemmini
 bash scripts/setup-paths.sh 
 
@@ -42,7 +46,7 @@ pip install -e .
 
 # Microbenchmark Setup
 cd $REPO_DIR
-cp -R scripts/templates/bareMetalC/. ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests/bareMetalC
+cp -R scripts/templates/bareMetalC/. power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests/bareMetalC
 cd power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests
 bash build.sh
 
