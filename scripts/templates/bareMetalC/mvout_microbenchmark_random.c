@@ -26,7 +26,7 @@ int main() {
   uint32_t B_sp_addr = DIM * 2;
   uint32_t C_sp_addr = 1 << 31;
 
-  int iterations = 1;
+  int iterations = 1000;
 
   unsigned long start, end, benchmark_cycles;
   start = read_cycles();
@@ -34,8 +34,8 @@ int main() {
   // Matrix Setup
   for(int i = 0; i < DIM; i++) {
     for(int j = 0; j < DIM; j++) {
-      A[i][j] = 0;
-      B[i][j] = 0;
+      A[i][j] = rand() % 256 - 128;
+      B[i][j] = i == j;
     } 
   }
 
@@ -43,8 +43,9 @@ int main() {
   gemmini_flush(0);
 
   // Config Setup
-  gemmini_extended_config_st(DIM * sizeof(elem_t), RELU, ACC_SCALE_IDENTITY);
-  gemmini_extended3_config_ld(DIM * sizeof(elem_t), MVIN_SCALE_IDENTITY, false, 0);
+  gemmini_config_ld(DIM * sizeof(elem_t));
+  gemmini_config_ex(WS, NO_ACTIVATION, 0);
+  gemmini_config_st(DIM * sizeof(elem_t));
 
   // Move in matrices for initialization
   gemmini_extended_mvin(A, A_sp_addr, DIM, DIM);

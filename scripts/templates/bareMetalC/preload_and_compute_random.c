@@ -30,7 +30,7 @@ int main() {
 
   unsigned long start, end, benchmark_cycles;
   start = read_cycles();
-
+  
   // Matrix Setup
   for(int i = 0; i < DIM; i++) {
     for(int j = 0; j < DIM; j++) {
@@ -43,16 +43,12 @@ int main() {
   gemmini_flush(0);
 
   // Config Setup
-  gemmini_extended_config_st(DIM * sizeof(elem_t), RELU, ACC_SCALE_IDENTITY);
-  gemmini_extended3_config_ld(DIM * sizeof(elem_t), MVIN_SCALE_IDENTITY, false, 0);
+  gemmini_config_ld(DIM * sizeof(elem_t));
+  gemmini_config_ex(WS, NO_ACTIVATION, 0);
 
   // Move in matrices for initialization
   gemmini_extended_mvin(A, A_sp_addr, DIM, DIM);
   gemmini_extended_mvin(B, B_sp_addr, DIM, DIM);
-
-  // Initialize mesh to be all 0
-  gemmini_extended_preload(B_sp_addr, C_sp_addr, 16, 16, 16, 16);
-  gemmini_extended_compute_preloaded(A_sp_addr, GARBAGE_ADDR, 16, 16, 16, 16);
 
   // Main microbenchmark code
   for(int i = 0; i < iterations; i++) {

@@ -3,14 +3,16 @@ import yaml
 
 try:     
     sys.argv[1]
+    sys.argv[2]
 except Exception as e:
     raise ValueError("Not enough args")
 
 workload = sys.argv[1]
+report = sys.argv[2]
 
 yaml_file = "../power-mappings-chipyard/vlsi/custom.yml"
 waveform_path = f"output/chipyard.harness.TestHarness.CustomGemminiSoCConfig/{workload}-baremetal.fsdb"
-report_name = f"{workload}-baremetal-gemmini"
+report_name = f"{report}-baremetal-gemmini"
 
 with open(yaml_file, 'r') as f:
     custom = yaml.safe_load(f)
