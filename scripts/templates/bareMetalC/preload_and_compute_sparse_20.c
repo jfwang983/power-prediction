@@ -21,8 +21,8 @@ int main() {
   elem_t A[DIM][DIM];
   elem_t B[DIM][DIM];
   elem_t C[DIM][DIM];
-  double zero_prob = 0.2; // Probability of generating zero
-  srand(42); // So test is deterministic
+  double zero_prob = 2; // Probability of generating zero
+//   srand(42); // So test is deterministic
 
   uint32_t A_sp_addr = 0;
   uint32_t B_sp_addr = DIM * 2;
@@ -36,8 +36,8 @@ int main() {
   // Matrix Setup
   for(int i = 0; i < DIM; i++) {
     for(int j = 0; j < DIM; j++) {
-      double rand_num = (double)rand() / RAND_MAX;
-      A[i][j] = (rand_NUM >= zero_prob);
+      int rand_num = rand() % 10;
+      A[i][j] = (rand_num >= zero_prob);
       B[i][j] = i == j;
     } 
   }

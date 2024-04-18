@@ -36,7 +36,6 @@ int main() {
   // Matrix Setup
   for(int i = 0; i < DIM; i++) {
     for(int j = 0; j < DIM; j++) {
-      double rand_num = (double)rand() / RAND_MAX;
       A[i][j] = 1;
       B[i][j] = i == j;
     } 
