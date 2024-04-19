@@ -7,6 +7,13 @@ ctrl_c() {
 
 trap ctrl_c INT
 
+run_spike() {
+     cd $SCRIPT_DIR
+     cd ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests
+     spike --extension=gemmini build/bareMetalC/$1-spike-baremetal > $SCRIPT_DIR/../data/spike_output/$1-spike_output.log
+     echo "Finished Spike Functional Simulation for ${1}"
+}
+
 run_vcs() {
      cd $SCRIPT_DIR
      python modify_mk.py $1
@@ -44,43 +51,15 @@ bash build.sh
 
 cd $SCRIPT_DIR
 cd ../data
+mkdir -p spike_output
 mkdir -p vcs_output
 mkdir -p joules_output
 
+# Instruction Count Generation
+run_spike tiled_matmul_ws_benchmark
+
 # Waveform Generation
-# inactive module microbenchmarks
-run_vcs inactive_mesh_acc
-run_vcs inactive_spad
-
-# mvin microbenchmarks
-run_vcs mvin_cache_hit_microbenchmark_random
-run_vcs mvin_cache_miss_microbenchmark_random
-
-# mvout microbenchmarks
-run_vcs mvout_microbenchmark_random
-
-# preload_and_compute microbenchmarks
-run_vcs preload_and_compute_random
-run_vcs preload_and_compute_sparse_0
-run_vcs preload_and_compute_sparse_20
-run_vcs preload_and_compute_sparse_60
-run_vcs preload_and_compute_sparse_100
+run_vcs tiled_matmul_ws_benchmark
 
 # Joules Execution
-# inactive module microbenchmarks
-run_joules inactive_mesh_acc
-run_joules inactive_spad
-
-# mvin microbenchmarks
-run_joules mvin_cache_hit_microbenchmark_random
-run_joules mvin_cache_miss_microbenchmark_random
-
-# mvout microbenchmarks
-run_joules mvout_microbenchmark_random
-
-# preload_and_compute microbenchmarks
-run_joules preload_and_compute_random
-run_joules preload_and_compute_sparse_0
-run_joules preload_and_compute_sparse_20
-run_joules preload_and_compute_sparse_60
-run_joules preload_and_compute_sparse_100
+run_joules tiled_matmul_ws_benchmark

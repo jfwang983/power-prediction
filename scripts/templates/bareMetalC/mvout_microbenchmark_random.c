@@ -23,13 +23,10 @@ int main() {
   elem_t C[DIM][DIM];
 
   uint32_t A_sp_addr = 0;
-  uint32_t B_sp_addr = DIM * 2;
+  uint32_t B_sp_addr = DIM + DIM;
   uint32_t C_sp_addr = 1 << 31;
 
   int iterations = 1000;
-
-  unsigned long start, end, benchmark_cycles;
-  start = read_cycles();
 
   // Matrix Setup
   for(int i = 0; i < DIM; i++) {
@@ -39,13 +36,16 @@ int main() {
     } 
   }
 
+  unsigned long start, end, benchmark_cycles;
+  start = read_cycles();
+
   // Gemmini instructions start
   gemmini_flush(0);
 
   // Config Setup
-  gemmini_config_ld(DIM * sizeof(elem_t));
+  gemmini_config_ld(DIM);
   gemmini_config_ex(WS, NO_ACTIVATION, 0);
-  gemmini_config_st(DIM * sizeof(elem_t));
+  gemmini_config_st(DIM);
 
   // Move in matrices for initialization
   gemmini_extended_mvin(A, A_sp_addr, DIM, DIM);

@@ -24,21 +24,26 @@ source /ecad/tools/vlsi.bashrc
 # Microbenchmark Setup
 cd $SCRIPT_DIR
 cp -R templates/bareMetalC/. ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests/bareMetalC
+cp -R templates/include/. ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests/include
 
 # Build Binaries
 cd ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests
 bash build.sh
 
-cd ../../../../vlsi
+cd $SCRIPT_DIR
+cd ../data
 mkdir -p vcs_output
+mkdir -p joules_output
 
 # RTL Setup
 cd $SCRIPT_DIR
 python modify_mk.py $WORKLOAD
 python modify_yml.py $WORKLOAD $JOULES_REPORT_NAME
 cd ../power-mappings-chipyard/vlsi
-make redo-sim-rtl-debug args="--only_step run_simulation" > vcs_output/$WORKLOAD-baremetal.log &
+make redo-sim-rtl-debug args="--only_step run_simulation" > $SCRIPT_DIR/../data/vcs_output/$WORKLOAD-baremetal.log &
 wait
 echo "Finished RTL Simulation for ${WORKLOAD}"
 make redo-power-rtl args="--only_step report_power" &
 wait
+cp -R build/chipyard.harness.TestHarness.CustomGemminiSoCConfig-ChipTop/power-rtl-rundir/reports/$WORKLOAD-baremetal-gemmini.power.rpt $SCRIPT_DIR/../data/joules_output/$WORKLOAD-baremetal-gemmini.power.rpt
+cp -R build/chipyard.harness.TestHarness.CustomGemminiSoCConfig-ChipTop/power-rtl-rundir/reports/$WORKLOAD-baremetal-gemmini.hier.power.rpt $SCRIPT_DIR/../data/joules_output/$WORKLOAD-baremetal-gemmini.hier.power.rpt

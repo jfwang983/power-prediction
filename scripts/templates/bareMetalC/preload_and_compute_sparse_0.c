@@ -21,40 +21,29 @@ int main() {
   elem_t A[DIM][DIM];
   elem_t B[DIM][DIM];
   elem_t C[DIM][DIM];
-//   double zero_prob = 0.6; // Probability of generating zero
-//   srand(42); // So test is deterministic
 
   uint32_t A_sp_addr = 0;
-  uint32_t B_sp_addr = DIM * 2;
+  uint32_t B_sp_addr = DIM + DIM;
   uint32_t C_sp_addr = 1 << 31;
 
   int iterations = 1000;
 
-  unsigned long start, end, benchmark_cycles;
-  start = read_cycles();
-  
   // Matrix Setup
   for(int i = 0; i < DIM; i++) {
     for(int j = 0; j < DIM; j++) {
-      double rand_num = (double)rand() / RAND_MAX;
       A[i][j] = 1;
       B[i][j] = i == j;
     } 
   }
 
-  // Print Matrix 
-  for (size_t i = 0; i < DIM; ++i) {
-    for (size_t j = 0; j < DIM; ++j) {
-        printf("%d ", A[i][j]);
-    }
-    printf("\n");
-  }
+  unsigned long start, end, benchmark_cycles;
+  start = read_cycles();
 
   // Gemmini instructions start
   gemmini_flush(0);
 
   // Config Setup
-  gemmini_config_ld(DIM * sizeof(elem_t));
+  gemmini_config_ld(DIM);
   gemmini_config_ex(WS, NO_ACTIVATION, 0);
 
   // Move in matrices for initialization
