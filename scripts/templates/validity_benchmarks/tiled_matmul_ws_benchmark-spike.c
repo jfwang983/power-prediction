@@ -186,11 +186,14 @@ int main() {
     }
 #endif
 
+  unsigned long pre_start, start, end, pre_prebenchmark_cycles, benchmark_cycles;
+  pre_start = read_cycles();
+
   elem_t A[BATCH_SIZE][INPUT_SIZE];
   elem_t B[INPUT_SIZE][HIDDEN_SIZE];
   elem_t C[BATCH_SIZE][HIDDEN_SIZE];
 
-  int iterations = 100;
+  int iterations = 10;
 
   // Matrix Setup
   for(int i = 0; i < BATCH_SIZE; i++) {
@@ -205,8 +208,8 @@ int main() {
     } 
   }
 
-  unsigned long start, end, benchmark_cycles;
   start = read_cycles();
+  pre_prebenchmark_cycles = start - pre_start;
 
   // Gemmini instructions start
   gemmini_flush(0);
@@ -221,6 +224,7 @@ int main() {
 
   end = read_cycles();
   benchmark_cycles = end - start;
+  printf("Pre cycles taken: %u\n", pre_prebenchmark_cycles);
   printf("Cycles taken: %u\n", benchmark_cycles);
 
   exit(0);

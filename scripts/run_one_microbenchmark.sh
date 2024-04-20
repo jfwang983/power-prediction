@@ -24,7 +24,6 @@ source /ecad/tools/vlsi.bashrc
 # Microbenchmark Setup
 cd $SCRIPT_DIR
 cp -R templates/bareMetalC/. ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests/bareMetalC
-cp -R templates/include/. ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests/include
 
 # Build Binaries
 cd ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests

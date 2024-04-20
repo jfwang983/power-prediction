@@ -36,7 +36,6 @@ source /ecad/tools/vlsi.bashrc
 # Microbenchmark Setup
 cd $SCRIPT_DIR
 cp -R templates/bareMetalC/. ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests/bareMetalC
-cp -R templates/include/. ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests/include
 
 # Build Binaries
 cd ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests
@@ -53,10 +52,12 @@ run_vcs inactive_mesh_acc
 run_vcs inactive_spad
 
 # mvin microbenchmarks
+run_vcs mvin_cache_hit_microbenchmark_0
 run_vcs mvin_cache_hit_microbenchmark_random
 run_vcs mvin_cache_miss_microbenchmark_random
 
 # mvout microbenchmarks
+run_vcs mvout_microbenchmark_0
 run_vcs mvout_microbenchmark_random
 
 # preload_and_compute microbenchmarks
@@ -72,10 +73,12 @@ run_joules inactive_mesh_acc
 run_joules inactive_spad
 
 # mvin microbenchmarks
+run_joules mvin_cache_hit_microbenchmark_0
 run_joules mvin_cache_hit_microbenchmark_random
 run_joules mvin_cache_miss_microbenchmark_random
 
 # mvout microbenchmarks
+run_joules mvout_microbenchmark_0
 run_joules mvout_microbenchmark_random
 
 # preload_and_compute microbenchmarks

@@ -1,6 +1,6 @@
 include $(abs_top_srcdir)/Makefrag
 
-tests =  inactive_mesh_acc  inactive_spad  mvin_cache_hit_microbenchmark_random  mvin_cache_miss_microbenchmark_random  mvout_microbenchmark_random  preload_and_compute_random  preload_and_compute_sparse_0  preload_and_compute_sparse_20  preload_and_compute_sparse_60  preload_and_compute_sparse_100
+tests =  tiled_matmul_ws_benchmark-spike  tiled_matmul_ws_benchmark
 
 tests_baremetal = $(tests:=-baremetal)
 

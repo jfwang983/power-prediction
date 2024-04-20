@@ -18,6 +18,9 @@ int main() {
     }
 #endif
 
+  unsigned long pre_start, start, end, pre_prebenchmark_cycles, benchmark_cycles;
+  pre_start = read_cycles();
+
   elem_t A[DIM][DIM];
   
   uint32_t A_sp_addr = 0;
@@ -31,8 +34,8 @@ int main() {
     } 
   }
 
-  unsigned long start, end, benchmark_cycles;
   start = read_cycles();
+  pre_prebenchmark_cycles = start - pre_start;
 
   // Gemmini instructions start
   gemmini_flush(0);
@@ -50,6 +53,7 @@ int main() {
 
   end = read_cycles();
   benchmark_cycles = end - start;
+  printf("Pre cycles taken: %u\n", pre_prebenchmark_cycles);
   printf("Cycles taken: %u\n", benchmark_cycles);
 
   exit(0);
