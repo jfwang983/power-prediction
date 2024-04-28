@@ -24,27 +24,29 @@ int main() {
 
   int iterations = 1000;
 
-  elem_t A[DIM][DIM];
-  elem_t B[DIM][DIM];
-  elem_t A_0[DIM][DIM];
-  elem_t B_0[DIM][DIM];
+  elem_t A_1[DIM][DIM];
+  elem_t B_1[DIM][DIM];
+  elem_t A_2[DIM][DIM];
+  elem_t B_2[DIM][DIM];
   elem_t C[DIM][DIM];
 
-  uint32_t A_sp_addr = 0;
-  uint32_t B_sp_addr = DIM;
+  uint32_t A_1_sp_addr = 0;
+  uint32_t A_2_sp_addr = DIM;
+  uint32_t B_1_sp_addr = DIM * 2;
+  uint32_t B_2_sp_addr = DIM * 3;
   uint32_t C_sp_addr = 1 << 31 | 0 << 30;
 
   for(int i = 0; i < DIM; i++) {
     for(int j = 0; j < DIM; j++) {
-      A_0[i][j] = 0;
-      B_0[i][j] = 0;
-    }
+      A_1[i][j] = rand() % 256 - 128;
+      B_1[i][j] = rand() % 256 - 128;
+    } 
   }
 
   for(int i = 0; i < DIM; i++) {
     for(int j = 0; j < DIM; j++) {
-      A[i][j] = rand() % 256 - 128;
-      B[i][j] = rand() % 256 - 128;
+      A_2[i][j] = rand() % 256 - 128;
+      B_2[i][j] = rand() % 256 - 128;
     } 
   }
 
@@ -54,33 +56,32 @@ int main() {
   // Gemmini instructions start
   gemmini_fence(); 
 
-  // Mvin start
+  // Preload + Compute start
   start = read_cycles();
 
   // Clear TLB
   gemmini_flush(0);
 
-  // Config setup
+  // Config Setup
   gemmini_config_ld(DIM);
   gemmini_config_ex(WS, NO_ACTIVATION, 0);
 
   // Move in matrices for initialization
-  gemmini_extended_mvin(A_0, A_sp_addr, DIM, DIM);
-  gemmini_extended_mvin(B_0, B_sp_addr, DIM, DIM);
-
-  // Initialize mesh to be all 0
-  gemmini_extended_preload(B_sp_addr, C_sp_addr, 16, 16, 16, 16);
-  gemmini_extended_compute_preloaded(A_sp_addr, GARBAGE_ADDR, 16, 16, 16, 16);
+  gemmini_extended_mvin(A_1, A_1_sp_addr, DIM, DIM);
+  gemmini_extended_mvin(A_2, A_2_sp_addr, DIM, DIM);
+  gemmini_extended_mvin(B_1, B_1_sp_addr, DIM, DIM);
+  gemmini_extended_mvin(B_2, B_2_sp_addr, DIM, DIM);
 
   // Main microbenchmark code
   for(int i = 0; i < iterations; i++) {
-    gemmini_extended_mvin(A, A_sp_addr, DIM, DIM);
+    gemmini_extended_preload(i % 2 == 0 ? B_1_sp_addr : B_2_sp_addr, C_sp_addr, 16, 16, 16, 16);
+    gemmini_extended_compute_preloaded(i % 2 == 0 ? A_1_sp_addr : A_2_sp_addr, GARBAGE_ADDR, 16, 16, 16, 16);
   }
 
   gemmini_fence();
   // Gemmini instructions end
 
-  // Mvin end
+  // Preload + Compute end
   end = read_cycles();
 
   setup_cycles = setup_end - setup_start;

@@ -186,8 +186,9 @@ int main() {
     }
 #endif
 
-  unsigned long pre_start, start, end, pre_prebenchmark_cycles, benchmark_cycles;
-  pre_start = read_cycles();
+  unsigned long setup_start, setup_end, start, end, setup_cycles, benchmark_cycles;
+  // Setup start
+  setup_start = read_cycles();
 
   elem_t A[BATCH_SIZE][INPUT_SIZE];
   elem_t B[INPUT_SIZE][HIDDEN_SIZE];
@@ -204,14 +205,20 @@ int main() {
 
   for(int i = 0; i < INPUT_SIZE; i++) {
     for(int j = 0; j < HIDDEN_SIZE; j++) {
-      B[i][j] = i == j;
+      B[i][j] = rand() % 256 - 128;
     } 
   }
 
-  start = read_cycles();
-  pre_prebenchmark_cycles = start - pre_start;
+  // Setup end
+  setup_end = read_cycles();
 
   // Gemmini instructions start
+  gemmini_fence();
+
+  // Tiled matmul start
+  start = read_cycles();
+
+  // Clear TLB
   gemmini_flush(0);
 
   // Main benchmark code
@@ -222,9 +229,12 @@ int main() {
   gemmini_fence();
   // Gemmini instructions end
 
+  // Tiled matmul end
   end = read_cycles();
+  
+  setup_cycles = setup_end - setup_start;
   benchmark_cycles = end - start;
-  printf("Pre cycles taken: %u\n", pre_prebenchmark_cycles);
+  printf("Setup cycles taken: %u\n", setup_cycles);
   printf("Cycles taken: %u\n", benchmark_cycles);
 
   exit(0);

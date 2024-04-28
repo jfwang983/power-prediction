@@ -13,6 +13,7 @@
 #define BATCH_SIZE  16
 #define INPUT_SIZE  64
 #define HIDDEN_SIZE 256
+#define OUTPUT_SIZE 16
 
 void sp_tiled_matmul_ws_simple(const elem_t * A, const elem_t * B, const void * D, void * C,
     scale_t A_scale_factor, scale_t B_scale_factor, scale_acc_t D_scale_factor,
@@ -43,7 +44,7 @@ void sp_tiled_matmul_ws_simple(const elem_t * A, const elem_t * B, const void * 
           size_t blocks = j + D_blocks <= J ? D_blocks : J-j;
           const size_t cols = blocks * DIM - (j + blocks >= J ? pad_J : 0);
           gemmini_extended_mvin3(D_dram_addr, D_sp_addr_acc, cols, rows);
-          printf("gemmini_extended_mvin3(D + %p, %p, %u, %u);\n", (bias_row * D_row_stride + j)*DIM*sizeof_D, D_sp_addr_acc, cols, rows);
+          // printf("gemmini_extended_mvin3(D + %p, %p, %u, %u);\n", (bias_row * D_row_stride + j)*DIM*sizeof_D, D_sp_addr_acc, cols, rows);
         }
       }
     }
@@ -61,7 +62,7 @@ void sp_tiled_matmul_ws_simple(const elem_t * A, const elem_t * B, const void * 
               const size_t cols = blocks * DIM - (i + blocks >= I ? pad_I : 0);
               const size_t rows = DIM - (k == K-1 ? pad_K : 0);
               gemmini_extended_mvin(A_dram_addr, A_sp_addr, cols, rows);
-              printf("gemmini_extended_mvin(A + %p, %p, %u, %u);\n", (k*A_row_stride+i)*DIM, A_sp_addr, cols, rows);
+              // printf("gemmini_extended_mvin(A + %p, %p, %u, %u);\n", (k*A_row_stride+i)*DIM, A_sp_addr, cols, rows);
             }
           } else {
             if (j == 0 && k % A_blocks == 0) {
@@ -70,7 +71,7 @@ void sp_tiled_matmul_ws_simple(const elem_t * A, const elem_t * B, const void * 
               const size_t cols = blocks * DIM - (k + blocks >= K ? pad_K : 0);
               const size_t rows = DIM - (i == I-1 ? pad_I : 0);
               gemmini_extended_mvin(A_dram_addr, A_sp_addr, cols, rows);
-              printf("gemmini_extended_mvin(A + %p, %p, %u, %u);\n", (i*A_row_stride+k)*DIM, A_sp_addr, cols, rows);
+              // printf("gemmini_extended_mvin(A + %p, %p, %u, %u);\n", (i*A_row_stride+k)*DIM, A_sp_addr, cols, rows);
             }
           }
           // Mvin B
@@ -81,7 +82,7 @@ void sp_tiled_matmul_ws_simple(const elem_t * A, const elem_t * B, const void * 
               const size_t cols = blocks * DIM - (k + blocks >= K ? pad_K : 0);
               const size_t rows = DIM - (j == J-1 ? pad_J : 0);
               gemmini_extended_mvin2(B_dram_addr, B_sp_addr, cols, rows);
-              printf("gemmini_extended_mvin2(B + %p, %p, %u, %u);\n", (j*B_row_stride+k)*DIM, B_sp_addr, cols, rows);
+              // printf("gemmini_extended_mvin2(B + %p, %p, %u, %u);\n", (j*B_row_stride+k)*DIM, B_sp_addr, cols, rows);
             }
           } else {
             if (i == 0 && j % B_blocks == 0) {
@@ -90,7 +91,7 @@ void sp_tiled_matmul_ws_simple(const elem_t * A, const elem_t * B, const void * 
               const size_t cols = blocks * DIM - (j + blocks >= J ? pad_J : 0);
               const size_t rows = DIM - (k == K-1 ? pad_K : 0);
               gemmini_extended_mvin2(B_dram_addr, B_sp_addr, cols, rows);
-              printf("gemmini_extended_mvin2(B + %p, %p, %u, %u);\n", (k*B_row_stride+j)*DIM, B_sp_addr, cols, rows);
+              // printf("gemmini_extended_mvin2(B + %p, %p, %u, %u);\n", (k*B_row_stride+j)*DIM, B_sp_addr, cols, rows);
             }
           }
           // Compute
@@ -110,13 +111,13 @@ void sp_tiled_matmul_ws_simple(const elem_t * A, const elem_t * B, const void * 
           const size_t C_cols = DIM - (j == J - 1 ? pad_J : 0);
           const size_t C_rows = DIM - (i == I - 1 ? pad_I : 0);
           gemmini_extended_preload(pre_sp_addr, out_sp_addr, B_cols, B_rows, C_cols, C_rows);
-          printf("gemmini_extended_preload(%p, 0x%x, %u, %u, %u, %u);\n", pre_sp_addr, out_sp_addr, B_cols, B_rows, C_cols, C_rows);
+          // printf("gemmini_extended_preload(%p, 0x%x, %u, %u, %u, %u);\n", pre_sp_addr, out_sp_addr, B_cols, B_rows, C_cols, C_rows);
           if (i == 0) { // First iteration
             gemmini_extended_compute_preloaded(A_sp_addr, GARBAGE_ADDR, A_cols, A_rows, DIM, DIM);
-            printf("gemmini_extended_compute_preloaded(%p, 0x%x, %u, %u, %u, %u);\n", A_sp_addr, GARBAGE_ADDR, A_cols, A_rows, DIM, DIM);
+            // printf("gemmini_extended_compute_preloaded(%p, 0x%x, %u, %u, %u, %u);\n", A_sp_addr, GARBAGE_ADDR, A_cols, A_rows, DIM, DIM);
           } else { // All other iterations
             gemmini_extended_compute_accumulated(A_sp_addr, GARBAGE_ADDR, A_cols, A_rows, DIM, DIM);
-            printf("gemmini_extended_compute_accumulated(%p, 0x%x, %u, %u, %u, %u);\n", A_sp_addr, GARBAGE_ADDR, A_cols, A_rows, DIM, DIM);
+            // printf("gemmini_extended_compute_accumulated(%p, 0x%x, %u, %u, %u, %u);\n", A_sp_addr, GARBAGE_ADDR, A_cols, A_rows, DIM, DIM);
           }
         }
         if (C != NULL && k == K-1) {
@@ -129,7 +130,7 @@ void sp_tiled_matmul_ws_simple(const elem_t * A, const elem_t * B, const void * 
             const size_t cols = blocks * DIM - (rounded_j + blocks >= J ? pad_J : 0);
             const size_t rows = DIM - (i == I - 1 ? pad_I : 0);
             gemmini_extended_mvout(C_dram_addr, rounded_C_sp_addr, cols, rows);
-            printf("gemmini_extended_mvout(C + %p, 0x%x, %u, %u);\n", (i*C_row_stride+rounded_j)*DIM*sizeof_C, rounded_C_sp_addr, cols, rows);
+            // printf("gemmini_extended_mvout(C + %p, 0x%x, %u, %u);\n", (i*C_row_stride+rounded_j)*DIM*sizeof_C, rounded_C_sp_addr, cols, rows);
           }
         }
       } 
@@ -167,11 +168,11 @@ void sp_tiled_matmul_auto_ws(size_t dim_I, size_t dim_J, size_t dim_K,
     gemmini_extended3_config_ld(stride_B * sizeof(elem_t), B_scale_factor, false, 1)
     gemmini_extended3_config_ld(repeating_bias ? 0 : (stride_D * sizeof_D), D_scale_factor, low_D, 2);
 
-    printf("gemmini_extended_config_ex(WS, %d, 0, 1, %d, %d);\n", act & 3, transpose_A, transpose_B);
-    printf("gemmini_extended_config_st(%d, %d, ACC_SCALE_IDENTITY);\n", stride_C * sizeof_C, act & 3);
-    printf("gemmini_extended3_config_ld(%d, MVIN_SCALE_IDENTITY, %d, %d);\n", stride_A * sizeof(elem_t), false, 0);
-    printf("gemmini_extended3_config_ld(%d, MVIN_SCALE_IDENTITY, %d, %d);\n", stride_B * sizeof(elem_t), false, 1);
-    printf("gemmini_extended3_config_ld(%d, MVIN_SCALE_IDENTITY, %d, %d);\n", repeating_bias ? 0 : (stride_D * sizeof_D), low_D, 2);
+    // printf("gemmini_extended_config_ex(WS, %d, 0, 1, %d, %d);\n", act & 3, transpose_A, transpose_B);
+    // printf("gemmini_extended_config_st(%d, %d, ACC_SCALE_IDENTITY);\n", stride_C * sizeof_C, act & 3);
+    // printf("gemmini_extended3_config_ld(%d, MVIN_SCALE_IDENTITY, %d, %d);\n", stride_A * sizeof(elem_t), false, 0);
+    // printf("gemmini_extended3_config_ld(%d, MVIN_SCALE_IDENTITY, %d, %d);\n", stride_B * sizeof(elem_t), false, 1);
+    // printf("gemmini_extended3_config_ld(%d, MVIN_SCALE_IDENTITY, %d, %d);\n", repeating_bias ? 0 : (stride_D * sizeof_D), low_D, 2);
         
     sp_tiled_matmul_ws_simple(A, B, D == NULL ? 0x1 : D, C, A_scale_factor, B_scale_factor, D_scale_factor,
         dim_I / DIM, dim_J / DIM, dim_K / DIM, 0, 0, 0, stride_A, stride_B, stride_D, stride_C,
@@ -186,45 +187,76 @@ int main() {
     }
 #endif
 
-  unsigned long pre_start, start, end, pre_prebenchmark_cycles, benchmark_cycles;
-  pre_start = read_cycles();
+  unsigned long setup_start, setup_end, start, end, setup_cycles, benchmark_cycles;
+  // Setup start
+  setup_start = read_cycles();
 
-  elem_t A[BATCH_SIZE][INPUT_SIZE];
-  elem_t B[INPUT_SIZE][HIDDEN_SIZE];
-  elem_t C[BATCH_SIZE][HIDDEN_SIZE];
+  // Input Layer
+  elem_t input_mat[BATCH_SIZE][INPUT_SIZE];
+  elem_t weights0[INPUT_SIZE][HIDDEN_SIZE];
+  elem_t inter_results0[BATCH_SIZE][HIDDEN_SIZE];
 
-  int iterations = 10;
+  // Hidden Layer
+  elem_t weights1[HIDDEN_SIZE][HIDDEN_SIZE];
+  elem_t inter_results1[BATCH_SIZE][HIDDEN_SIZE];
+
+  // Output Layer
+  elem_t weights2[HIDDEN_SIZE][OUTPUT_SIZE];
+  elem_t output_mat[BATCH_SIZE][OUTPUT_SIZE];
 
   // Matrix Setup
   for(int i = 0; i < BATCH_SIZE; i++) {
     for(int j = 0; j < INPUT_SIZE; j++) {
-      A[i][j] = rand() % 256 - 128;
+      input_mat[i][j] = rand() % 256 - 128;
     } 
   }
 
   for(int i = 0; i < INPUT_SIZE; i++) {
     for(int j = 0; j < HIDDEN_SIZE; j++) {
-      B[i][j] = i == j;
+      weights0[i][j] = rand() % 256 - 128;
     } 
   }
 
-  start = read_cycles();
-  pre_prebenchmark_cycles = start - pre_start;
+  for(int i = 0; i < HIDDEN_SIZE; i++) {
+    for(int j = 0; j < HIDDEN_SIZE; j++) {
+      weights1[i][j] = rand() % 256 - 128;
+    } 
+  }
+
+  for(int i = 0; i < HIDDEN_SIZE; i++) {
+    for(int j = 0; j < OUTPUT_SIZE; j++) {
+      weights2[i][j] = rand() % 256 - 128;
+    } 
+  }
+
+  // Setup end
+  setup_end = read_cycles();
 
   // Gemmini instructions start
-  gemmini_flush(0);
+  gemmini_fence();
 
-  // Main benchmark code
-  for(int i = 0; i < iterations; i++) {
-    sp_tiled_matmul_auto_ws(BATCH_SIZE, HIDDEN_SIZE, INPUT_SIZE, A, B, NULL, C, NO_ACTIVATION);
-  }
+  // Tiled matmul start
+  start = read_cycles();
+
+  // Clear TLB
+  gemmini_flush(0);
+  
+  // MLP Layer Matmuls
+  sp_tiled_matmul_auto_ws(BATCH_SIZE, HIDDEN_SIZE, INPUT_SIZE, input_mat, weights0, NULL, inter_results0, NO_ACTIVATION);
+
+  sp_tiled_matmul_auto_ws(BATCH_SIZE, HIDDEN_SIZE, HIDDEN_SIZE, inter_results0, weights1, NULL, inter_results1, NO_ACTIVATION);
+
+  sp_tiled_matmul_auto_ws(BATCH_SIZE, OUTPUT_SIZE, HIDDEN_SIZE, inter_results1, weights2, NULL, output_mat, NO_ACTIVATION);
 
   gemmini_fence();
   // Gemmini instructions end
 
+  // Tiled matmul end
   end = read_cycles();
+
+  setup_cycles = setup_end - setup_start;
   benchmark_cycles = end - start;
-  printf("Pre cycles taken: %u\n", pre_prebenchmark_cycles);
+  printf("Setup cycles taken: %u\n", setup_cycles);
   printf("Cycles taken: %u\n", benchmark_cycles);
 
   exit(0);

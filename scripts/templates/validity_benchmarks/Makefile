@@ -1,6 +1,6 @@
 include $(abs_top_srcdir)/Makefrag
 
-tests =  tiled_matmul_ws_benchmark-spike  tiled_matmul_ws_benchmark
+tests =  tiled_matmul_ws_random_benchmark-spike  tiled_matmul_ws_random_benchmark  mlp_random_benchmark-spike  mlp_random_benchmark
 
 tests_baremetal = $(tests:=-baremetal)
 

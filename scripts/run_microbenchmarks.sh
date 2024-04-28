@@ -23,8 +23,9 @@ run_joules() {
      cd ../power-mappings-chipyard/vlsi/
      make redo-power-rtl args="--only_step report_power" &
      wait
-     cp -R build/chipyard.harness.TestHarness.CustomGemminiSoCConfig-ChipTop/power-rtl-rundir/reports/$1-baremetal-gemmini.power.rpt $SCRIPT_DIR/../data/joules_output/$1-baremetal-gemmini.power.rpt
-     cp -R build/chipyard.harness.TestHarness.CustomGemminiSoCConfig-ChipTop/power-rtl-rundir/reports/$1-baremetal-gemmini.hier.power.rpt $SCRIPT_DIR/../data/joules_output/$1-baremetal-gemmini.hier.power.rpt
+     python compile_power_plots.py $1
+     cp -R build/chipyard.harness.TestHarness.CustomGemminiSoCConfig-ChipTop/power-rtl-rundir/reports/$1-baremetal-gemmini.power.rpt $SCRIPT_DIR/../data/joules_output/$1/$1-baremetal-gemmini.power.rpt
+     cp -R build/chipyard.harness.TestHarness.CustomGemminiSoCConfig-ChipTop/power-rtl-rundir/reports/$1-baremetal-gemmini.hier.power.rpt $SCRIPT_DIR/../data/joules_output/$1/$1-baremetal-gemmini.hier.power.rpt
 }
 
 # Setup Tools
@@ -48,42 +49,38 @@ mkdir -p joules_output
 
 # Waveform Generation
 # inactive module microbenchmarks
-run_vcs inactive_mesh_acc
-run_vcs inactive_spad
+run_vcs active_spad_only
+run_vcs active_spad_mesh_only
+run_vcs active_acc_only
 
 # mvin microbenchmarks
-run_vcs mvin_cache_hit_microbenchmark_0
+# run_vcs mvin_cache_hit_microbenchmark_0
 run_vcs mvin_cache_hit_microbenchmark_random
-run_vcs mvin_cache_miss_microbenchmark_random
 
 # mvout microbenchmarks
-run_vcs mvout_microbenchmark_0
+# run_vcs mvout_microbenchmark_0
 run_vcs mvout_microbenchmark_random
 
 # preload_and_compute microbenchmarks
 run_vcs preload_and_compute_random
-run_vcs preload_and_compute_sparse_0
-run_vcs preload_and_compute_sparse_20
-run_vcs preload_and_compute_sparse_60
-run_vcs preload_and_compute_sparse_100
+run_vcs preload_and_compute_random_100_test2
+run_vcs preload_and_compute_random_test
 
 # Joules Execution
 # inactive module microbenchmarks
-run_joules inactive_mesh_acc
-run_joules inactive_spad
+run_joules active_spad_only
+run_joules active_spad_mesh_only
+run_joules active_acc_only
 
 # mvin microbenchmarks
-run_joules mvin_cache_hit_microbenchmark_0
+# run_joules mvin_cache_hit_microbenchmark_0
 run_joules mvin_cache_hit_microbenchmark_random
-run_joules mvin_cache_miss_microbenchmark_random
 
 # mvout microbenchmarks
-run_joules mvout_microbenchmark_0
+# run_joules mvout_microbenchmark_0
 run_joules mvout_microbenchmark_random
 
 # preload_and_compute microbenchmarks
 run_joules preload_and_compute_random
-run_joules preload_and_compute_sparse_0
-run_joules preload_and_compute_sparse_20
-run_joules preload_and_compute_sparse_60
-run_joules preload_and_compute_sparse_100
+run_joules preload_and_compute_random_100_test2
+run_joules preload_and_compute_random_test
