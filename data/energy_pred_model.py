@@ -11,7 +11,7 @@ microbenchmarks = {
 }
 
 validity_benchmarks = {
-    "tiled_matmul_ws_random_benchmark": {"start_time": 21387220.0, "end_time": 22904020.0},
+    "tiled_matmul_ws_random_benchmark": {"start_time": 7041616.0, "end_time": 9963216.0},
     # "mlp_random_benchmark": {"start_time": 0, "end_time": 1}
 }
 
