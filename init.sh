@@ -55,7 +55,7 @@ bash build.sh
 cd $REPO_DIR
 cd scripts
 python modify_mk.py simple
-python modify_yml.py simple
+python modify_yml.py simple simple
 cd ../power-mappings-chipyard/vlsi
 make sim-rtl-debug &
 wait
