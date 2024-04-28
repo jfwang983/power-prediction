@@ -23,9 +23,11 @@ run_joules() {
      cd ../power-mappings-chipyard/vlsi/
      make redo-power-rtl args="--only_step report_power" &
      wait
-     python compile_power_plots.py $1
+     mkdir -p ../../data/joules_output/$1
      cp -R build/chipyard.harness.TestHarness.CustomGemminiSoCConfig-ChipTop/power-rtl-rundir/reports/$1-baremetal-gemmini.power.rpt $SCRIPT_DIR/../data/joules_output/$1/$1-baremetal-gemmini.power.rpt
      cp -R build/chipyard.harness.TestHarness.CustomGemminiSoCConfig-ChipTop/power-rtl-rundir/reports/$1-baremetal-gemmini.hier.power.rpt $SCRIPT_DIR/../data/joules_output/$1/$1-baremetal-gemmini.hier.power.rpt
+     cd $SCRIPT_DIR
+     python compile_power_plots.py $1
 }
 
 # Setup Tools
@@ -48,11 +50,6 @@ mkdir -p vcs_output
 mkdir -p joules_output
 
 # Waveform Generation
-# inactive module microbenchmarks
-run_vcs active_spad_only
-run_vcs active_spad_mesh_only
-run_vcs active_acc_only
-
 # mvin microbenchmarks
 # run_vcs mvin_cache_hit_microbenchmark_0
 run_vcs mvin_cache_hit_microbenchmark_random
@@ -63,15 +60,9 @@ run_vcs mvout_microbenchmark_random
 
 # preload_and_compute microbenchmarks
 run_vcs preload_and_compute_random
-run_vcs preload_and_compute_random_100_test2
-run_vcs preload_and_compute_random_test
+run_vcs preload_and_compute_random_test2
 
 # Joules Execution
-# inactive module microbenchmarks
-run_joules active_spad_only
-run_joules active_spad_mesh_only
-run_joules active_acc_only
-
 # mvin microbenchmarks
 # run_joules mvin_cache_hit_microbenchmark_0
 run_joules mvin_cache_hit_microbenchmark_random
@@ -82,5 +73,4 @@ run_joules mvout_microbenchmark_random
 
 # preload_and_compute microbenchmarks
 run_joules preload_and_compute_random
-run_joules preload_and_compute_random_100_test2
-run_joules preload_and_compute_random_test
+run_joules preload_and_compute_random_test2

@@ -30,9 +30,11 @@ run_joules() {
      cd ../power-mappings-chipyard/vlsi/
      make redo-power-rtl args="--only_step report_power" &
      wait
-     python compile_power_plots.py $1
+     mkdir -p ../../data/joules_output/$1
      cp -R build/chipyard.harness.TestHarness.CustomGemminiSoCConfig-ChipTop/power-rtl-rundir/reports/$1-baremetal-gemmini.power.rpt $SCRIPT_DIR/../data/joules_output/$1/$1-baremetal-gemmini.power.rpt
      cp -R build/chipyard.harness.TestHarness.CustomGemminiSoCConfig-ChipTop/power-rtl-rundir/reports/$1-baremetal-gemmini.hier.power.rpt $SCRIPT_DIR/../data/joules_output/$1/$1-baremetal-gemmini.hier.power.rpt
+     cd $SCRIPT_DIR
+     python compile_power_plots.py $1
 }
 
 # Setup Tools
@@ -57,13 +59,13 @@ mkdir -p vcs_output
 mkdir -p joules_output
 
 # Instruction Count Generation
-# run_spike tiled_matmul_ws_random_benchmark
+run_spike tiled_matmul_ws_random_benchmark
 run_spike mlp_random_benchmark
 
 # Waveform Generation
-# run_vcs tiled_matmul_ws_random_benchmark
+run_vcs tiled_matmul_ws_random_benchmark
 run_vcs mlp_random_benchmark
 
 # Joules Execution
-# run_joules tiled_matmul_ws_random_benchmark
+run_joules tiled_matmul_ws_random_benchmark
 run_joules mlp_random_benchmark

@@ -44,5 +44,8 @@ wait
 echo "Finished RTL Simulation for ${WORKLOAD}"
 make redo-power-rtl args="--only_step report_power" &
 wait
-cp -R build/chipyard.harness.TestHarness.CustomGemminiSoCConfig-ChipTop/power-rtl-rundir/reports/$WORKLOAD-baremetal-gemmini.power.rpt $SCRIPT_DIR/../data/joules_output/$WORKLOAD-baremetal-gemmini.power.rpt
-cp -R build/chipyard.harness.TestHarness.CustomGemminiSoCConfig-ChipTop/power-rtl-rundir/reports/$WORKLOAD-baremetal-gemmini.hier.power.rpt $SCRIPT_DIR/../data/joules_output/$WORKLOAD-baremetal-gemmini.hier.power.rpt
+mkdir -p ../../data/joules_output/$WORKLOAD
+cp -R build/chipyard.harness.TestHarness.CustomGemminiSoCConfig-ChipTop/power-rtl-rundir/reports/$WORKLOAD-baremetal-gemmini.power.rpt $SCRIPT_DIR/../data/joules_output/$WORKLOAD/$WORKLOAD-baremetal-gemmini.power.rpt
+cp -R build/chipyard.harness.TestHarness.CustomGemminiSoCConfig-ChipTop/power-rtl-rundir/reports/$WORKLOAD-baremetal-gemmini.hier.power.rpt $SCRIPT_DIR/../data/joules_output/$WORKLOAD/$WORKLOAD-baremetal-gemmini.hier.power.rpt
+cd $SCRIPT_DIR
+python compile_power_plots.py $WORKLOAD
