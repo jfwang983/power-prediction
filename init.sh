@@ -54,10 +54,10 @@ bash build.sh
 # RTL Setup
 cd $REPO_DIR
 cd scripts
-python modify_mk.py $BAREMETAL_BIN_DIR/mvin_cache_hit_microbenchmark0-baremetal
-python modify_yml.py mvin_cache_hit_microbenchmark0
+python modify_mk.py simple
+python modify_yml.py simple
 cd ../power-mappings-chipyard/vlsi
-make sim-rtl-debug BINARY=$BAREMETAL_BIN_DIR/mvin_cache_hit_microbenchmark0-baremetal LOADMEM=$BAREMETAL_BIN_DIR/mvin_cache_hit_microbenchmark0-baremetal &
+make sim-rtl-debug &
 wait
 make power-rtl &
 wait
