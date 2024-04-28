@@ -1,6 +1,6 @@
 Instance: /ChipTop/system/tile_prci_domain/tile_reset_domain_tile/gemmini
 Power Unit: mW
-PDB Frames: /mlp_random_benchmark_baremetal_fsdb_dut_instance_TestDriver_testHarness_chiptop0/frame#0
+PDB Frames: /mlp_random_benchmark_baremetal_fsdb_dut_instance_TestDriver_testHarness_chiptop0__cycles_100__ChipTop_clock_uncore_clock/frame#0
   -------------------------------------------------------------------------
     Category         Leakage     Internal    Switching        Total    Row%
   -------------------------------------------------------------------------
