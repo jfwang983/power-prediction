@@ -16,15 +16,11 @@ git submodule update
 conda install -n base conda-lock=1.4
 git clone https://github.com/jfwang983/power-mappings-chipyard.git
 cd power-mappings-chipyard
-git checkout epi
+git checkout epi-bwrc
 ./build-setup.sh riscv-tools -s 4 -s 6 -s 7 -s 8 -s 9 -f
-source ../../miniconda3/etc/profile.d/conda.sh
+source ../../miniforge3/etc/profile.d/conda.sh
 source env.sh
 source /ecad/tools/vlsi.bashrc
-
-# Hammer Setup
-cd ../hammer
-pip install -e .
 
 # Gemmini Setup
 cd ../power-mappings-chipyard/generators/gemmini
@@ -51,12 +47,20 @@ cp -R scripts/templates/include/. power-mappings-chipyard/generators/gemmini/sof
 cd power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests
 bash build.sh
 
-# RTL Setup
+# Config Setup
 cd $REPO_DIR
 cd scripts
 python modify_mk.py simple
 python modify_yml.py simple simple
+
+# Hammer Setup
 cd ../power-mappings-chipyard/vlsi
+echo "Y" | pip uninstall hammer-vlsi
+git clone git@github.com:ucb-bar/hammer.git
+pip install -e hammer/
+pip install -e hammer-intech22-plugin/
+
+# RTL Setup
 make sim-rtl-debug &
 wait
 make power-rtl &
