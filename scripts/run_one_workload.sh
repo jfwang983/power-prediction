@@ -1,5 +1,6 @@
 #!/bin/bash
 SCRIPT_DIR=$PWD
+WORKLOAD=$1
 
 ctrl_c() {
      exit 1
@@ -10,7 +11,7 @@ trap ctrl_c INT
 run_spike() {
      cd $SCRIPT_DIR
      cd ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests
-     spike --extension=gemmini build/bareMetalC/$1-spike-baremetal > $SCRIPT_DIR/../data/spike_output/$1-spike_output.log
+     spike --extension=gemmini build/bareMetalC/$1_spike-baremetal > $SCRIPT_DIR/../data/spike_output/$1_spike.log
      echo "Finished Spike Functional Simulation for ${1}"
 }
 
@@ -39,14 +40,15 @@ run_joules() {
 
 # Setup Tools
 cd ../power-mappings-chipyard
-source ../../miniconda3/etc/profile.d/conda.sh
+source ../../miniforge3/etc/profile.d/conda.sh
 source env.sh
 source /ecad/tools/vlsi.bashrc
 
-# Microbenchmark Setup
+# Workload Setup
 cd $SCRIPT_DIR
+python generate_random_matrices.py
 python generate_spike_c_files.py
-cp -R templates/validity_benchmarks/. ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests/bareMetalC
+cp -R templates/bareMetalC/. ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests/bareMetalC
 
 # Build Binaries
 cd ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests
@@ -59,13 +61,10 @@ mkdir -p vcs_output
 mkdir -p joules_output
 
 # Instruction Count Generation
-run_spike tiled_matmul_ws_random_benchmark
-run_spike mlp_random_benchmark
+run_spike $WORKLOAD
 
 # Waveform Generation
-run_vcs tiled_matmul_ws_random_benchmark
-run_vcs mlp_random_benchmark
+run_vcs $WORKLOAD
 
 # Joules Execution
-run_joules tiled_matmul_ws_random_benchmark
-run_joules mlp_random_benchmark
+run_joules $WORKLOAD

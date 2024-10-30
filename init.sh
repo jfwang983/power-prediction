@@ -9,15 +9,15 @@ ctrl_c() {
 trap ctrl_c INT
 
 # Repo Setup
-git submodule init
-git submodule update
+# git submodule init
+# git submodule update
 
-# Custom Chipyard Setup
-conda install -n base conda-lock=1.4
-git clone https://github.com/jfwang983/power-mappings-chipyard.git
+# # Custom Chipyard Setup
+# conda install -n base conda-lock=1.4
+# git clone https://github.com/jfwang983/power-mappings-chipyard.git
 cd power-mappings-chipyard
-git checkout epi-bwrc
-./build-setup.sh riscv-tools -s 4 -s 6 -s 7 -s 8 -s 9 -f
+# git checkout epi-bwrc
+# ./build-setup.sh riscv-tools -s 4 -s 6 -s 7 -s 8 -s 9 -f
 source ../../miniforge3/etc/profile.d/conda.sh
 source env.sh
 source /ecad/tools/vlsi.bashrc
@@ -55,10 +55,10 @@ python modify_yml.py simple simple
 
 # Hammer Setup
 cd ../power-mappings-chipyard/vlsi
-echo "Y" | pip uninstall hammer-vlsi
-git clone git@github.com:ucb-bar/hammer.git
-pip install -e hammer/
-pip install -e hammer-intech22-plugin/
+# echo "Y" | pip uninstall hammer-vlsi
+# git clone git@github.com:ucb-bar/hammer.git
+# pip install -e hammer/
+# pip install -e hammer-intech22-plugin/
 
 # RTL Setup
 make sim-rtl-debug &

@@ -1,20 +1,22 @@
 import os
+import re
 
-validity_benchmark_dir = "templates/validity_benchmarks"
-benchmark_list = [benchmark for benchmark in os.listdir(validity_benchmark_dir) if not benchmark.endswith("-spike.c")]
+microbenchmark_dir = "templates/bareMetalC"
+microbenchmark_list = [microbenchmark for microbenchmark in os.listdir(microbenchmark_dir) if re.match(r'^.*\.c$', microbenchmark) and microbenchmark != 'simple.c' and not microbenchmark.endswith("_spike.c")]
 makefile_list = "  "
 
-for benchmark in benchmark_list:
-    if benchmark[-11:] == "benchmark.c":
-        with open(f"{validity_benchmark_dir}/{benchmark}", "r") as file:
-            lines = file.readlines()
-        
+for microbenchmark in microbenchmark_list:
+    with open(f"{microbenchmark_dir}/{microbenchmark}", "r") as file:
+        lines = file.readlines()
+
         modified_lines = []
         for line in lines:
-            if line.strip().startswith("// printf"):
+            if '#include "matmul_funcs.h"' in line:
+                modified_lines.append(line.replace("matmul_funcs.h", "matmul_funcs_spike.h"))
+            elif line.strip().startswith("// printf"):
                 modified_lines.append(line.replace("// ", ""))
             else:
                 modified_lines.append(line)
         
-        with open(f"{validity_benchmark_dir}/{benchmark[:-2]}-spike.c", "w") as file:
+        with open(f"{microbenchmark_dir}/{microbenchmark[:-2]}_spike.c", "w") as file:
             file.writelines(modified_lines)

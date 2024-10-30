@@ -1,6 +1,16 @@
 include $(abs_top_srcdir)/Makefrag
 
-tests =  simple  mvin_cache_hit_microbenchmark_0  mvin_cache_hit_microbenchmark_random  mvout_microbenchmark_0  mvout_microbenchmark_random  preload_and_compute_random  preload_and_compute_random_test2  preload_and_compute_sparse_0  preload_and_compute_sparse_20  preload_and_compute_sparse_60  preload_and_compute_sparse_100
+tests =  simple  matmul_1  matmul_2  matmul_3  matmul_4  matmul_5  matmul_6  matmul_7  matmul_8  matmul_9  matmul_10 \
+matmul_1_spike  matmul_2_spike  matmul_3_spike  matmul_4_spike  matmul_5_spike  matmul_6_spike  matmul_7_spike  matmul_8_spike  matmul_9_spike  matmul_10_spike \
+mlp_1  mlp_2  mlp_3  mlp_4  mlp_5  mlp_6  mlp_1_spike  mlp_2_spike  mlp_3_spike  mlp_4_spike  mlp_5_spike  mlp_6_spike \
+mvin_microbenchmark  mvout_microbenchmark  preload_and_compute_microbenchmark \
+mvin_microbenchmark_spike  mvout_microbenchmark_spike  preload_and_compute_microbenchmark_spike \
+mvin_microbenchmark_basic  mvout_microbenchmark_basic  preload_and_compute_microbenchmark_basic \
+mvin_microbenchmark_basic_spike  mvout_microbenchmark_basic_spike  preload_and_compute_microbenchmark_basic_spike \
+mvin_microbenchmark_original  mvout_microbenchmark_original  preload_and_compute_microbenchmark_original \
+mvin_microbenchmark_original_spike  mvout_microbenchmark_original_spike  preload_and_compute_microbenchmark_original_spike \
+conv_1 conv_2 conv_3 conv_4 conv_5 conv_6 \
+conv_1_spike conv_2_spike conv_3_spike conv_4_spike conv_5_spike conv_6_spike
 
 tests_baremetal = $(tests:=-baremetal)
 

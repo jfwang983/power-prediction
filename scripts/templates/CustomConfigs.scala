@@ -16,8 +16,7 @@ object GemminiCustomConfigs {
   val baselineInferenceConfig = defaultConfig.copy(
     acc_singleported = true,
     acc_sub_banks = 2,
-    has_training_convs = false,
-    acc_capacity = CapacityInKilobytes(128),
+    has_training_convs = false
   )
 
   val highPerfInferenceConfig = defaultConfig.copy(

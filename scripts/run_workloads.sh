@@ -7,6 +7,13 @@ ctrl_c() {
 
 trap ctrl_c INT
 
+run_spike() {
+     cd $SCRIPT_DIR
+     cd ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests
+     spike --extension=gemmini build/bareMetalC/$1_spike-baremetal > $SCRIPT_DIR/../data/spike_output/$1_spike.log
+     echo "Finished Spike Functional Simulation for ${1}"
+}
+
 run_vcs() {
      cd $SCRIPT_DIR
      python modify_mk.py $1
@@ -32,12 +39,14 @@ run_joules() {
 
 # Setup Tools
 cd ../power-mappings-chipyard
-source ../../miniconda3/etc/profile.d/conda.sh
+source ../../miniforge3/etc/profile.d/conda.sh
 source env.sh
 source /ecad/tools/vlsi.bashrc
 
-# Microbenchmark Setup
+# Workload Setup
 cd $SCRIPT_DIR
+python generate_random_matrices.py
+python generate_spike_c_files.py
 cp -R templates/bareMetalC/. ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests/bareMetalC
 
 # Build Binaries
@@ -46,31 +55,30 @@ bash build.sh
 
 cd $SCRIPT_DIR
 cd ../data
+mkdir -p spike_output
 mkdir -p vcs_output
 mkdir -p joules_output
 
+workloads=(
+    matmul_1
+    matmul_2
+    matmul_3
+    matmul_4
+    mlp_1
+    mlp_2
+)
+
+# Instruction Count Generation
+for workload in "${workloads[@]}"; do
+    run_spike "$workload"
+done
+
 # Waveform Generation
-# mvin microbenchmarks
-# run_vcs mvin_cache_hit_microbenchmark_0
-run_vcs mvin_cache_hit_microbenchmark_random
-
-# mvout microbenchmarks
-# run_vcs mvout_microbenchmark_0
-run_vcs mvout_microbenchmark_random
-
-# preload_and_compute microbenchmarks
-run_vcs preload_and_compute_random
-run_vcs preload_and_compute_random_test2
+for workload in "${workloads[@]}"; do
+    run_vcs "$workload"
+done
 
 # Joules Execution
-# mvin microbenchmarks
-# run_joules mvin_cache_hit_microbenchmark_0
-run_joules mvin_cache_hit_microbenchmark_random
-
-# mvout microbenchmarks
-# run_joules mvout_microbenchmark_0
-run_joules mvout_microbenchmark_random
-
-# preload_and_compute microbenchmarks
-run_joules preload_and_compute_random
-run_joules preload_and_compute_random_test2
+for workload in "${workloads[@]}"; do
+    run_joules "$workload"
+done

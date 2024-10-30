@@ -1,14 +1,16 @@
 #!/bin/bash
 SCRIPT_DIR=$PWD
+WORKLOAD=$1
 
 # Setup Tools
 cd ../power-mappings-chipyard
-source ../../miniconda3/etc/profile.d/conda.sh
+source ../../miniforge3/etc/profile.d/conda.sh
 source env.sh
 source /ecad/tools/vlsi.bashrc
 
 # Binary Setup
 cd $SCRIPT_DIR
+python generate_random_matrices.py
 cp -R templates/bareMetalC/. ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests/bareMetalC
 
 # Build Binaries
@@ -17,4 +19,4 @@ bash build.sh
 
 cd $SCRIPT_DIR
 cd ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests
-spike --extension=gemmini build/bareMetalC/$1-baremetal
+spike --extension=gemmini build/bareMetalC/$WORKLOAD-baremetal
