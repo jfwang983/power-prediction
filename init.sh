@@ -41,7 +41,6 @@ pip install -e .
 # Microbenchmark Setup
 cd $REPO_DIR
 cp -R scripts/templates/bareMetalC/. power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests/bareMetalC
-cp -R scripts/templates/include/. power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests/include
 cd power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests
 bash build.sh
 
