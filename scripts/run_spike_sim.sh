@@ -4,7 +4,7 @@ WORKLOAD=$1
 
 # Setup Tools
 cd ../power-mappings-chipyard
-source ../../miniforge3/etc/profile.d/conda.sh
+source .conda-env/etc/profile.d/conda.sh
 source env.sh
 
 # Binary Setup

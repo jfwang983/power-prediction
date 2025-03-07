@@ -17,8 +17,8 @@ conda install -n base conda-lock=1.4
 git clone https://github.com/jfwang983/power-mappings-chipyard.git
 cd power-mappings-chipyard
 git checkout energy-bwrc
-./build-setup.sh riscv-tools -s 4 -s 6 -s 7 -s 8 -s 9 -f
-source ../../miniforge3/etc/profile.d/conda.sh
+./build-setup.sh riscv-tools -s 4 -s 6 -s 7 -s 8 -s 9
+source .conda-env/etc/profile.d/conda.sh
 source env.sh
 
 # Gemmini Setup
