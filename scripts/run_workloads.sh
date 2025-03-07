@@ -41,7 +41,6 @@ run_joules() {
 cd ../power-mappings-chipyard
 source ../../miniforge3/etc/profile.d/conda.sh
 source env.sh
-source /ecad/tools/vlsi.bashrc
 
 # Workload Setup
 cd $SCRIPT_DIR

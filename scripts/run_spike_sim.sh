@@ -6,7 +6,6 @@ WORKLOAD=$1
 cd ../power-mappings-chipyard
 source ../../miniforge3/etc/profile.d/conda.sh
 source env.sh
-source /ecad/tools/vlsi.bashrc
 
 # Binary Setup
 cd $SCRIPT_DIR
