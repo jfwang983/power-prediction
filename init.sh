@@ -23,8 +23,6 @@ source env.sh
 
 # Gemmini Setup
 cd ../power-mappings-chipyard/generators/gemmini
-git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
-git fetch && git checkout v0.7.1
 git submodule update --init --recursive
 make -C software/libgemmini install
 
