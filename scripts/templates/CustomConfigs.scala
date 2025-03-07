@@ -14,7 +14,6 @@ object GemminiCustomConfigs {
 
   // Create your own configs here
   val baselineInferenceConfig = defaultConfig.copy(
-    acc_singleported = true,
     acc_sub_banks = 2,
     has_training_convs = false
   )

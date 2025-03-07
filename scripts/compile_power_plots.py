@@ -1,8 +1,12 @@
 import os
 import sys
 import pandas as pd
+
 import matplotlib.pyplot as plt
 plt.rcParams.update({'font.size': 20})
+
+sys.path.append("../data")
+import energy_extractor as ex
 
 try:
     sys.argv[1]
@@ -11,7 +15,8 @@ except Exception as e:
 
 workload = sys.argv[1]
 
-baseline_power = {"gemmini": 2.14618217913, "spad": 0.040646853904, "acc": 0.265598337549, "mesh": 0.812532273247}
+baseline_power = {}
+# baseline_power = {"gemmini": 5.94482810545, "spad": 0.0433836063, "acc": 0.60945318258, "mesh": 2.34555818889}
 title_dict = {"gemmini": "Gemmini", "spad": "Scratchpad", "acc": "Accumulator", "mesh": "PE Mesh"}
 
 joules_reports_path = "../power-mappings-chipyard/vlsi/build/chipyard.harness.TestHarness.CustomGemminiSoCConfig-ChipTop/power-rtl-rundir/reports"
@@ -20,7 +25,19 @@ spad_report_names = [f"{joules_reports_path}/{workload}-baremetal-spad_mems_{i}.
 acc_report_names = [f"{joules_reports_path}/{workload}-baremetal-acc_mems_{i}.profile.png.data" for i in range(2)]
 mesh_report_name = [f"{joules_reports_path}/{workload}-baremetal-mesh.profile.png.data"]
 
-def generate_aggregated_power_plot(report_names, module_type):
+
+def get_baseline_power():
+    baseline_power_file_path = "../data/joules_output/simple"
+    if os.path.exists(baseline_power_file_path):
+        global baseline_power
+        baseline_data = ex.extract_data("simple")
+        baseline_power = baseline_data["dynamic_power"]
+        return True
+    else:
+        return False
+
+
+def generate_aggregated_power_plot(report_names, module_type, subtract_baseline):
     df = pd.DataFrame(columns=['sim_time', 'power'])
 
     for i in range(len(report_names)):
@@ -36,7 +53,8 @@ def generate_aggregated_power_plot(report_names, module_type):
                     df.loc[row] = data
                 row += 1
 
-    df['power'] = df.apply(lambda row: max(row['power'] - baseline_power[module_type], 0), axis=1)
+    if subtract_baseline:
+        df['power'] = df.apply(lambda row: max(row['power'] - baseline_power[module_type], 0), axis=1)
 
     joules_data_dir_path = "../data/joules_output/" + workload
 
@@ -56,7 +74,8 @@ def generate_aggregated_power_plot(report_names, module_type):
     plt.close()
 
 
-generate_aggregated_power_plot(gemmini_report_names, "gemmini")
-generate_aggregated_power_plot(spad_report_names, "spad")
-generate_aggregated_power_plot(acc_report_names, "acc")
-generate_aggregated_power_plot(mesh_report_name, "mesh")
+subtract_baseline = get_baseline_power()
+generate_aggregated_power_plot(gemmini_report_names, "gemmini", subtract_baseline)
+generate_aggregated_power_plot(spad_report_names, "spad", subtract_baseline)
+generate_aggregated_power_plot(acc_report_names, "acc", subtract_baseline)
+generate_aggregated_power_plot(mesh_report_name, "mesh", subtract_baseline)

@@ -1,29 +1,116 @@
 #!/bin/bash
-bash run_one_workload.sh matmul_1
-bash run_one_workload.sh matmul_2
-bash run_one_workload.sh matmul_3
-bash run_one_workload.sh matmul_4
-bash run_one_workload.sh matmul_5
-bash run_one_workload.sh matmul_6
-bash run_one_workload.sh matmul_7
-bash run_one_workload.sh matmul_8
-bash run_one_workload.sh matmul_9
-bash run_one_workload.sh matmul_10
-bash run_one_workload.sh mlp_1
-bash run_one_workload.sh mlp_2
-bash run_one_workload.sh mlp_3
-bash run_one_workload.sh mlp_4
-bash run_one_workload.sh mlp_5
-bash run_one_workload.sh mlp_6
-bash run_one_workload.sh conv_1
-bash run_one_workload.sh conv_2
-bash run_one_workload.sh conv_3
-bash run_one_workload.sh conv_4
-bash run_one_workload.sh conv_5
-bash run_one_workload.sh conv_6
-bash run_one_workload.sh mvin_microbenchmark
-bash run_one_workload.sh mvout_microbenchmark
-bash run_one_workload.sh preload_and_compute_microbenchmark
-bash run_one_workload.sh mvin_microbenchmark_basic
-bash run_one_workload.sh mvout_microbenchmark_basic
-bash run_one_workload.sh preload_and_compute_microbenchmark_basic
+# bash run_one_workload.sh matmul_1
+# bash run_one_workload.sh matmul_2
+# bash run_one_workload.sh matmul_3
+# bash run_one_workload.sh matmul_4
+# bash run_one_workload.sh matmul_5
+# bash run_one_workload.sh matmul_6
+# bash run_one_workload.sh matmul_7
+# bash run_one_workload.sh matmul_8
+# bash run_one_workload.sh matmul_9
+# bash run_one_workload.sh matmul_10
+# bash run_one_workload.sh mlp_1
+# bash run_one_workload.sh mlp_2
+# bash run_one_workload.sh mlp_3
+# bash run_one_workload.sh mlp_4
+# bash run_one_workload.sh mlp_5
+# bash run_one_workload.sh mlp_6
+# bash run_one_workload.sh conv_1
+# bash run_one_workload.sh conv_2
+# bash run_one_workload.sh conv_3
+# bash run_one_workload.sh conv_4
+# bash run_one_workload.sh conv_5
+# bash run_one_workload.sh conv_6
+# bash run_one_workload.sh mvin_microbenchmark
+# bash run_one_workload.sh mvout_microbenchmark
+# bash run_one_workload.sh preload_and_compute_microbenchmark
+# bash run_one_workload.sh mvin_microbenchmark_basic
+# bash run_one_workload.sh mvout_microbenchmark_basic
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic
+# bash run_one_workload.sh mvin_microbenchmark_basic_100
+# bash run_one_workload.sh mvout_microbenchmark_basic_100
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_100
+# bash run_one_workload.sh mvin_microbenchmark_basic_1_col
+# bash run_one_workload.sh mvin_microbenchmark_basic_2_col
+# bash run_one_workload.sh mvin_microbenchmark_basic_4_col
+# bash run_one_workload.sh mvin_microbenchmark_basic_8_col
+# bash run_one_workload.sh mvin_microbenchmark_basic_16_col
+# bash run_one_workload.sh mvout_microbenchmark_basic_1_col
+# bash run_one_workload.sh mvout_microbenchmark_basic_2_col
+# bash run_one_workload.sh mvout_microbenchmark_basic_4_col
+# bash run_one_workload.sh mvout_microbenchmark_basic_8_col
+# bash run_one_workload.sh mvout_microbenchmark_basic_16_col
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_1_col
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_2_col
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_4_col
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_8_col
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_16_col
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_A_1_row
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_A_2_row
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_A_4_row
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_A_8_row
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_A_16_row
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_B_1_col
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_B_2_col
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_B_4_col
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_B_8_col
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_B_16_col
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_1_outer
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_2_outer
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_4_outer
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_8_outer
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_16_outer
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_1_inner
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_2_inner
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_4_inner
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_8_inner
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_16_inner
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_1_2_outer
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_1_4_outer
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_1_8_outer
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_2_1_outer
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_2_4_outer
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_2_8_outer
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_4_1_outer
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_4_2_outer
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_4_8_outer
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_8_1_outer
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_8_2_outer
+# bash run_one_workload.sh preload_and_compute_microbenchmark_basic_8_4_outer
+# bash run_one_workload.sh simple
+# bash run_one_workload.sh matmul_1_test
+# bash run_one_workload.sh matmul_2_test
+# bash run_one_workload.sh matmul_3_test
+# bash run_one_workload.sh matmul_4_test
+# bash run_one_workload.sh matmul_5_test
+# bash run_one_workload.sh matmul_6_test
+# bash run_one_workload.sh matmul_7_test
+# bash run_one_workload.sh matmul_8_test
+# bash run_one_workload.sh matmul_9_test
+# bash run_one_workload.sh matmul_10_test
+# bash run_one_workload.sh mlp_1_test
+# bash run_one_workload.sh mlp_2_test
+# bash run_one_workload.sh mlp_3_test
+# bash run_one_workload.sh mlp_4_test
+# bash run_one_workload.sh mlp_5_test
+# bash run_one_workload.sh mlp_6_test
+
+bash run_one_workload.sh mvin_microbenchmark_mult_addr_basic_1_col
+# bash run_one_workload.sh mvin_microbenchmark_mult_addr_basic_2_col
+# bash run_one_workload.sh mvin_microbenchmark_mult_addr_basic_4_col
+# bash run_one_workload.sh mvin_microbenchmark_mult_addr_basic_8_col
+# bash run_one_workload.sh mvin_microbenchmark_mult_addr_basic_16_col
+# bash run_one_workload.sh mvin_microbenchmark_mult_addr_basic_32_col
+# bash run_one_workload.sh mvin_microbenchmark_mult_addr_basic_64_col
+# bash run_one_workload.sh preload_and_compute_microbenchmark_10_iter_basic
+# bash run_one_workload.sh preload_and_compute_microbenchmark_100_iter_basic
+# bash run_one_workload.sh preload_and_compute_microbenchmark_1000_iter_basic
+# bash run_one_workload.sh preload_and_compute_microbenchmark_addr_acc_basic
+# bash run_one_workload.sh preload_and_compute_microbenchmark_addr_overwrite_basic
+# bash run_one_workload.sh mvout_microbenchmark_mult_addr_basic_1_col
+# bash run_one_workload.sh mvout_microbenchmark_mult_addr_basic_2_col
+# bash run_one_workload.sh mvout_microbenchmark_mult_addr_basic_4_col
+# bash run_one_workload.sh mvout_microbenchmark_mult_addr_basic_8_col
+# bash run_one_workload.sh mvout_microbenchmark_mult_addr_basic_16_col
+# bash run_one_workload.sh mvout_microbenchmark_mult_addr_basic_32_col
+# bash run_one_workload.sh mvout_microbenchmark_mult_addr_basic_64_col
