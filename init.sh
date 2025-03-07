@@ -29,9 +29,10 @@ make -C software/libgemmini install
 # Gemmini Config Setup
 cd $REPO_DIR
 cp -f scripts/templates/CustomConfigs.scala power-mappings-chipyard/generators/gemmini/src/main/scala/gemmini/CustomConfigs.scala
+cp -f scripts/templates/CustomCPUConfigs.scala power-mappings-chipyard/generators/gemmini/src/main/scala/gemmini/CustomCPUConfigs.scala
 cp -f scripts/templates/CustomSoCConfigs.scala power-mappings-chipyard/generators/gemmini/src/main/scala/gemmini/CustomSoCConfigs.scala
 cd power-mappings-chipyard/generators/gemmini
-bash scripts/setup-paths.sh 
+bash scripts/setup-paths.sh
 
 # Gemmini-Rocc-Test Setup
 cd software/gemmini-rocc-tests

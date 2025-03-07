@@ -18,9 +18,10 @@ with open(yaml_file, 'r') as f:
     custom = yaml.safe_load(f)
     report_configs = custom['power.inputs']['report_configs']
     for i in range(len(report_configs)):
-        report_name = f"{report}-{report_types[i]}"
-        report_configs[i]['waveform_path'] = waveform_path
-        report_configs[i]['report_name'] = report_name
+        if 'report_name' in report_configs[i].keys():
+            report_name = f"{report}-{report_types[i]}"
+            report_configs[i]['waveform_path'] = waveform_path
+            report_configs[i]['report_name'] = report_name
 
     with open(yaml_file, 'w',) as f:
         yaml.dump(custom, f, sort_keys=False)
