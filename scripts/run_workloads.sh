@@ -216,15 +216,15 @@ for microbenchmark in "${microbenchmarks[@]}"; do
     run_spike_test "$microbenchmark"
 done
 
-# # Waveform Generation
-# for microbenchmark in "${microbenchmarks[@]}"; do
-#     run_vcs "$microbenchmark"
-# done
+# Waveform Generation
+for microbenchmark in "${microbenchmarks[@]}"; do
+    run_vcs "$microbenchmark"
+done
 
-# # Joules Execution
-# for microbenchmark in "${microbenchmarks[@]}"; do
-#     run_joules "$microbenchmark"
-# done
+# Joules Execution
+for microbenchmark in "${microbenchmarks[@]}"; do
+    run_joules "$microbenchmark"
+done
 
 # Workloads
 # Instruction Count Generation
@@ -232,12 +232,12 @@ for workload in "${workloads[@]}"; do
     run_spike "$workload"
 done
 
-# # Waveform Generation
-# for workload in "${workloads[@]}"; do
-#     run_vcs "$workload"
-# done
+# Waveform Generation
+for workload in "${workloads[@]}"; do
+    run_vcs "$workload"
+done
 
-# # Joules Execution
-# for workload in "${workloads[@]}"; do
-#     run_joules "$workload"
-# done
+# Joules Execution
+for workload in "${workloads[@]}"; do
+    run_joules "$workload"
+done
