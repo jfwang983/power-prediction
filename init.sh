@@ -12,7 +12,14 @@ trap ctrl_c INT
 git submodule init
 git submodule update
 
+# Data Setup
+cd $REPO_DIR/data
+mkdir -p spike_output
+mkdir -p vcs_output
+mkdir -p joules_output
+
 # Custom Chipyard Setup
+cd $REPO_DIR
 conda install -n base conda-lock=1.4
 git clone https://github.com/jfwang983/power-mappings-chipyard.git
 cd power-mappings-chipyard
@@ -45,8 +52,7 @@ cd power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests
 bash build.sh
 
 # Config Setup
-cd $REPO_DIR
-cd scripts
+cd $REPO_DIR/scripts
 python modify_mk.py simple
 python modify_yml.py simple simple
 
@@ -58,12 +64,15 @@ pip install -e hammer/
 pip install -e hammer-intech22-plugin/
 
 # RTL Setup
-make sim-rtl-debug &
+make sim-rtl-debug > $REPO_DIR/data/vcs_output/simple-baremetal.log &
 wait
 make power-rtl &
 wait
 
 # Data Setup
-cd $REPO_DIR
-cd scripts
+cd $REPO_DIR/data
+mkdir -p joules_output/simple
+cp -R build/chipyard.harness.TestHarness.CustomGemminiSoCConfig-ChipTop/power-rtl-rundir/reports/simple-baremetal-gemmini.power.rpt $REPO_DIR/data/joules_output/simple/simple-baremetal-gemmini.power.rpt
+cp -R build/chipyard.harness.TestHarness.CustomGemminiSoCConfig-ChipTop/power-rtl-rundir/reports/simple-baremetal-gemmini.hier.power.rpt $REPO_DIR/data/joules_output/simple/simple-baremetal-gemmini.hier.power.rpt
+cd $REPO_DIR/scripts
 python compile_power_plots.py simple

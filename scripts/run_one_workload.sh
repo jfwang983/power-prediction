@@ -19,9 +19,8 @@ run_vcs() {
      cd $SCRIPT_DIR
      python modify_mk.py $1
      cd ../power-mappings-chipyard/vlsi/
-     echo "make redo-sim-rtl-debug args="--only_step run_simulation" > $SCRIPT_DIR/../data/vcs_output/$1-baremetal.log"
-     # make redo-sim-rtl-debug args="--only_step run_simulation" > $SCRIPT_DIR/../data/vcs_output/$1-baremetal.log &
-     # wait
+     make redo-sim-rtl-debug args="--only_step run_simulation" > $SCRIPT_DIR/../data/vcs_output/$1-baremetal.log &
+     wait
      echo "Finished RTL Simulation for ${1}"
 }
 
@@ -54,17 +53,11 @@ cp -R templates/bareMetalC/. ../power-mappings-chipyard/generators/gemmini/softw
 cd ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests
 bash build.sh
 
-cd $SCRIPT_DIR
-cd ../data
-mkdir -p spike_output
-mkdir -p vcs_output
-mkdir -p joules_output
-
 # Instruction Count Generation
-# run_spike $WORKLOAD
+run_spike $WORKLOAD
 
 # Waveform Generation
 run_vcs $WORKLOAD
 
 # Joules Execution
-# run_joules $WORKLOAD
+run_joules $WORKLOAD

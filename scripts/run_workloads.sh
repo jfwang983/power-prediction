@@ -52,12 +52,6 @@ cp -R templates/bareMetalC/. ../power-mappings-chipyard/generators/gemmini/softw
 cd ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests
 bash build.sh
 
-cd $SCRIPT_DIR
-cd ../data
-mkdir -p spike_output
-mkdir -p vcs_output
-mkdir -p joules_output
-
 workloads=(
 #     mvin_microbenchmark_basic
 #     mvin_microbenchmark_basic_1_col

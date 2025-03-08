@@ -28,7 +28,7 @@ mesh_report_name = [f"{joules_reports_path}/{workload}-baremetal-mesh.profile.pn
 
 def get_baseline_power():
     baseline_power_file_path = "../data/joules_output/simple"
-    if os.path.exists(baseline_power_file_path):
+    if os.path.exists(f"{baseline_power_file_path}/gemmini_power_plot.csv"):
         global baseline_power
         baseline_data = ex.extract_data("simple")
         baseline_power = baseline_data["dynamic_power"]
