@@ -1,12 +1,11 @@
 import os
 import re
 
-microbenchmark_dir = "templates/bareMetalC"
-microbenchmark_list = [microbenchmark for microbenchmark in os.listdir(microbenchmark_dir) if re.match(r'^.*\.c$', microbenchmark) and microbenchmark != 'simple.c' and not microbenchmark.endswith("_spike.c")]
-makefile_list = "  "
+workload_dir = "templates/bareMetalC"
+workload_list = [workload for workload in os.listdir(workload_dir) if re.match(r'^.*\.c$', workload) and "microbenchmark" not in workload and workload != 'simple.c' and not workload.endswith("_spike.c")]
 
-for microbenchmark in microbenchmark_list:
-    with open(f"{microbenchmark_dir}/{microbenchmark}", "r") as file:
+for workload in workload_list:
+    with open(f"{workload_dir}/{workload}", "r") as file:
         lines = file.readlines()
 
         modified_lines = []
@@ -18,5 +17,5 @@ for microbenchmark in microbenchmark_list:
             else:
                 modified_lines.append(line)
         
-        with open(f"{microbenchmark_dir}/{microbenchmark[:-2]}_spike.c", "w") as file:
+        with open(f"{workload_dir}/{workload[:-2]}_spike.c", "w") as file:
             file.writelines(modified_lines)
