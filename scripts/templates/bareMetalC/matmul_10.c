@@ -25,9 +25,9 @@ int main() {
   // Setup start
   setup_start = read_cycles();
 
-  // Matrix A, BATCH_SIZE, INPUT_SIZE Setup
+  // Matrix A, elem_t, BATCH_SIZE, INPUT_SIZE Setup
 
-  // Matrix B, INPUT_SIZE, HIDDEN_SIZE Setup
+  // Matrix B, elem_t, INPUT_SIZE, HIDDEN_SIZE Setup
 
   // Matrix C
   elem_t C[BATCH_SIZE][HIDDEN_SIZE];
