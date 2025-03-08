@@ -7,6 +7,13 @@ ctrl_c() {
 
 trap ctrl_c INT
 
+run_spike_test() {
+     cd $SCRIPT_DIR
+     cd ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests
+     spike --extension=gemmini build/bareMetalC/$1-baremetal > /dev/null
+     echo "Finished Spike Functional Simulation for ${1}"
+}
+
 run_spike() {
      cd $SCRIPT_DIR
      cd ../power-mappings-chipyard/generators/gemmini/software/gemmini-rocc-tests
@@ -204,20 +211,20 @@ workloads=(
 )
 
 # Microbenchmarks
-# Instruction Count Generation
+# Test Microbenchmarks
 for microbenchmark in "${microbenchmarks[@]}"; do
-    run_spike "$microbenchmark"
+    run_spike_test "$microbenchmark"
 done
 
-# Waveform Generation
-for microbenchmark in "${microbenchmarks[@]}"; do
-    run_vcs "$microbenchmark"
-done
+# # Waveform Generation
+# for microbenchmark in "${microbenchmarks[@]}"; do
+#     run_vcs "$microbenchmark"
+# done
 
-# Joules Execution
-for microbenchmark in "${microbenchmarks[@]}"; do
-    run_joules "$microbenchmark"
-done
+# # Joules Execution
+# for microbenchmark in "${microbenchmarks[@]}"; do
+#     run_joules "$microbenchmark"
+# done
 
 # Workloads
 # Instruction Count Generation
@@ -225,12 +232,12 @@ for workload in "${workloads[@]}"; do
     run_spike "$workload"
 done
 
-# Waveform Generation
-for workload in "${workloads[@]}"; do
-    run_vcs "$workload"
-done
+# # Waveform Generation
+# for workload in "${workloads[@]}"; do
+#     run_vcs "$workload"
+# done
 
-# Joules Execution
-for workload in "${workloads[@]}"; do
-    run_joules "$workload"
-done
+# # Joules Execution
+# for workload in "${workloads[@]}"; do
+#     run_joules "$workload"
+# done
