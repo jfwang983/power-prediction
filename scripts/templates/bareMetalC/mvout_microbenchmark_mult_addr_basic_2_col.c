@@ -40,7 +40,6 @@ int main() {
 
   uint32_t C_acc_addr = C_acc_base_addr;
   uint32_t next_C_acc_addr;
-  uint32_t C_acc_addr_offset = 0;
 
   // Setup end
   setup_end = read_cycles();
@@ -69,6 +68,7 @@ int main() {
   }
 
   C_acc_base_addr = 1 << 31;
+  MAX_ACC_ADDR = C_acc_base_addr + ACC_ROWS;
   C_acc_addr = C_acc_base_addr;
 
   // Main microbenchmark code
